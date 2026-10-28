@@ -1,0 +1,79 @@
+export const meta = {
+  topic: 'statistics',
+  title: 'Averages, charts and correlation',
+  summary: 'Mean, median, mode and range, averages from frequency tables, statistical diagrams and scatter graphs.',
+  keywords: ['mean', 'median', 'mode', 'range', 'frequency table', 'grouped data', 'pie chart', 'histogram', 'scatter graph', 'correlation', 'line of best fit', 'stem and leaf'],
+  level: 'all',
+}
+
+# Averages, charts and correlation
+
+<Key>
+An **average** is a typical value. The **mean**, **median** and **mode** are different averages; the **range** measures how spread out the data are.
+</Key>
+
+## The four measures
+
+| Measure | How to find it |
+|---|---|
+| **Mean** | add all values, divide by how many |
+| **Median** | middle value when ordered ($\tfrac{n+1}{2}$th value) |
+| **Mode** | most common value |
+| **Range** | largest − smallest |
+
+Data: $3, 5, 5, 8, 9, 12$. Mean $= 42/6 = 7$, median $= (5+8)/2 = 6.5$, mode $= 5$, range $= 9$.
+
+- The **mean** uses all the data but is affected by **outliers**.
+- The **median** is not affected by extreme values.
+- The **mode** is the only average that works for non-numerical data.
+
+## Frequency tables
+
+For values $x$ with frequencies $f$:
+
+$$\text{mean} = \frac{\sum fx}{\sum f}$$
+
+| $x$ | $f$ | $fx$ |
+|---|---|---|
+| 1 | 4 | 4 |
+| 2 | 6 | 12 |
+| 3 | 10 | 30 |
+| Total | 20 | 46 |
+
+Mean $= 46/20 = 2.3$. The median is the $\tfrac{20+1}{2} = 10.5$th value (between the 10th and 11th): both are 3, so the median is 3.
+
+## Grouped data
+
+Use the **midpoint** of each class as $x$. The result is an **estimate** of the mean. The **modal class** is the class with the highest frequency. You can only identify the class containing the median, not its exact value.
+
+<Tip>
+In a grouped frequency table with classes like $10 \le x < 20$, the midpoint is $15$. Use $fx$ with the midpoint.
+</Tip>
+
+## Charts
+
+- **Pie chart:** angle $= \dfrac{\text{frequency}}{\text{total}} \times 360^\circ$.
+- **Bar chart / pictogram / stem-and-leaf:** a stem-and-leaf shows every value and the shape; include a **key**.
+
+<Ext>
+**Histogram** with unequal class widths: the **area** of each bar is the frequency. The vertical axis is **frequency density** $= \dfrac{\text{frequency}}{\text{class width}}$.
+</Ext>
+
+## Scatter graphs and correlation
+
+A scatter graph shows two sets of data.
+
+- **Positive correlation:** as one increases, the other increases.
+- **Negative correlation:** as one increases, the other decreases.
+- **No correlation:** no pattern.
+- A **line of best fit** passes close to the points with roughly equal numbers above and below. Use it to **estimate** values within the data range.
+
+<Mistake>
+Saying correlation proves one thing **causes** the other. Correlation shows a relationship only. Also do not extrapolate far outside the range of the data.
+</Mistake>
+
+## Worked example
+
+The mean of 5 numbers is 8. A sixth number is added and the mean becomes 9. Find the sixth number.
+
+Total of first five $= 40$. New total $= 6 \times 9 = 54$. Sixth number $= 54 - 40 = 14$.

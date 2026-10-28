@@ -1,0 +1,68 @@
+export const meta = {
+  topic: 'mensuration',
+  title: 'Perimeter, area and volume',
+  summary: 'Areas of 2D shapes, circles, arcs and sectors, and volumes and surface areas of prisms, cylinders, cones, spheres and pyramids.',
+  keywords: ['area', 'perimeter', 'circumference', 'arc length', 'sector', 'volume', 'surface area', 'cylinder', 'cone', 'sphere', 'pyramid', 'prism'],
+  level: 'all',
+}
+
+# Perimeter, area and volume
+
+<Key>
+**Perimeter** is a length (cm). **Area** is a surface (cm²). **Volume** is space (cm³). Check your units: they should match the type of quantity.
+</Key>
+
+## Area of 2D shapes
+
+| Shape | Area |
+|---|---|
+| Rectangle | $l \times w$ |
+| Triangle | $\tfrac12 b h$ |
+| Parallelogram | $b \times h$ |
+| Trapezium | $\tfrac12 (a + b) h$ |
+| Circle | $\pi r^2$ |
+
+The circumference of a circle is $C = 2\pi r = \pi d$.
+
+## Arcs and sectors
+
+For a sector with angle $\theta$ at the centre:
+
+$$\text{arc length} = \frac{\theta}{360} \times 2\pi r \qquad \text{sector area} = \frac{\theta}{360} \times \pi r^2$$
+
+A sector with $r = 6$ and $\theta = 60^\circ$ has arc length $\dfrac{60}{360} \times 12\pi = 2\pi \approx 6.28$ and area $\dfrac{60}{360} \times 36\pi = 6\pi \approx 18.8$.
+
+## 3D shapes
+
+| Solid | Volume | Curved / total surface area |
+|---|---|---|
+| **Prism** (any uniform cross-section) | area of cross-section × length | add the faces |
+| **Cuboid** | $lwh$ | $2(lw + lh + wh)$ |
+| **Cylinder** | $\pi r^2 h$ | curved $2\pi r h$; total $2\pi r h + 2\pi r^2$ |
+| **Cone** | $\tfrac13 \pi r^2 h$ | curved $\pi r l$ ($l$ = slant height) |
+| **Pyramid** | $\tfrac13 \times \text{base area} \times h$ | add the faces |
+| **Sphere** | $\tfrac43 \pi r^3$ | $4\pi r^2$ |
+
+The **slant height** of a cone: $l = \sqrt{r^2 + h^2}$.
+
+<Tip>
+These formulae are on the formula sheet in many papers, but you must know **how to use** them and choose the right one.
+</Tip>
+
+<Mistake>
+Using the diameter in place of the radius. Halve the diameter first. Also keep units consistent: convert everything to cm (or m) before calculating.
+</Mistake>
+
+## Compound shapes
+
+Split into simple shapes, find each area or volume, then **add** (or **subtract** for a hole).
+
+## Worked examples
+
+**1.** A cylinder has radius 5 cm and height 12 cm.
+$$V = \pi \times 5^2 \times 12 = 300\pi \approx 942\ \text{cm}^3$$
+
+**2.** A cone has base radius 6 cm and height 8 cm. Slant height $= \sqrt{36 + 64} = 10$.
+$$\text{curved area} = \pi \times 6 \times 10 = 60\pi \approx 188\ \text{cm}^2$$
+
+**3.** A sphere has volume $\tfrac43 \pi r^3 = 288\pi$. Then $r^3 = 216$ and $r = 6$.

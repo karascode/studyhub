@@ -1,0 +1,69 @@
+export const meta = {
+  topic: 'trigonometry',
+  title: 'Sine rule, cosine rule and area of a triangle',
+  summary: 'Trigonometry in any triangle: the sine rule, the cosine rule, the area formula and bearings.',
+  keywords: ['sine rule', 'cosine rule', 'area of triangle', 'bearings', 'non-right-angled', 'ambiguous case', '3D', 'trigonometry'],
+  level: 'all',
+}
+
+# Sine rule, cosine rule and area of a triangle
+
+<Key>
+For triangles **without** a right angle, use the **sine rule** or **cosine rule**. Label the triangle so that side $a$ is opposite angle $A$, $b$ is opposite $B$ and $c$ is opposite $C$.
+</Key>
+
+## Which rule to use?
+
+| You know | You want | Use |
+|---|---|---|
+| a side and its **opposite** angle, plus one more angle or side | another side or angle | **sine rule** |
+| **two sides and the angle between them** | the third side | **cosine rule** |
+| **all three sides** | an angle | **cosine rule** |
+
+## The sine rule
+
+$$\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}$$
+
+For finding an angle, invert it: $\dfrac{\sin A}{a} = \dfrac{\sin B}{b}$.
+
+Example: $A = 40^\circ$, $B = 65^\circ$, $a = 8$. Find $b$.
+$$b = \frac{8 \sin 65^\circ}{\sin 40^\circ} = 11.3$$
+
+<Ext>
+The sine rule can give **two possible angles** when finding an angle: $\sin\theta = \sin(180^\circ - \theta)$. If the question says "obtuse", choose the larger one.
+</Ext>
+
+## The cosine rule
+
+To find a **side**:
+$$a^2 = b^2 + c^2 - 2bc\cos A$$
+
+To find an **angle**:
+$$\cos A = \frac{b^2 + c^2 - a^2}{2bc}$$
+
+Example: $b = 7$, $c = 9$, $A = 50^\circ$.
+$$a^2 = 49 + 81 - 126\cos 50^\circ = 130 - 80.99 = 49.0 \quad\Rightarrow\quad a = 7.00$$
+
+## Area of a triangle
+
+$$\text{area} = \tfrac12 ab \sin C$$
+
+where $C$ is the angle **between** sides $a$ and $b$.
+
+## Bearings
+
+A **bearing** is an angle measured **clockwise from north**, written with three digits (e.g. $045^\circ$). Draw a north line at each point and use alternate/co-interior angles.
+
+<Tip>
+Check your calculator is in **degrees**, and keep unrounded values until the final answer.
+</Tip>
+
+<Mistake>
+Using the cosine rule's minus sign wrongly when the angle is obtuse: $\cos$ of an obtuse angle is negative, so the term $-2bc\cos A$ becomes positive.
+</Mistake>
+
+## Worked example
+
+Triangle $ABC$ has $a = 6$, $b = 8$ and $C = 70^\circ$. Find its area.
+
+$$\text{area} = \tfrac12 \times 6 \times 8 \times \sin 70^\circ = 22.6\ \text{square units}$$

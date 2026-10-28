@@ -1,0 +1,70 @@
+export const meta = {
+  topic: 'geometry',
+  title: 'Angles and polygons',
+  summary: 'Angle facts, parallel lines, triangles, quadrilaterals and the interior and exterior angles of polygons.',
+  keywords: ['angles', 'parallel lines', 'alternate', 'corresponding', 'triangle', 'polygon', 'interior angle', 'exterior angle', 'regular polygon', 'isosceles'],
+  level: 'all',
+}
+
+# Angles and polygons
+
+<Key>
+Geometry questions need **reasons**. Always write the rule you used, e.g. "angles on a straight line add to $180^\circ$".
+</Key>
+
+## Basic angle facts
+
+| Rule | Statement |
+|---|---|
+| Angles on a straight line | add to $180^\circ$ |
+| Angles around a point | add to $360^\circ$ |
+| Vertically opposite angles | are equal |
+| Angles in a triangle | add to $180^\circ$ |
+| Angles in a quadrilateral | add to $360^\circ$ |
+| Exterior angle of a triangle | equals the sum of the two opposite interior angles |
+
+## Parallel lines
+
+A line crossing two parallel lines (a **transversal**) creates:
+
+- **Corresponding** angles: equal (F shape).
+- **Alternate** angles: equal (Z shape).
+- **Co-interior** angles: add to $180^\circ$ (C or U shape).
+
+<Tip>
+Name the rule: "corresponding angles", "alternate angles", "co-interior angles". "Z angles" is not accepted as a reason.
+</Tip>
+
+## Triangles
+
+- **Equilateral**: 3 equal sides, all angles $60^\circ$.
+- **Isosceles**: 2 equal sides, and the **base angles are equal**.
+- **Right-angled**: one angle of $90^\circ$.
+
+## Polygons
+
+For a polygon with $n$ sides:
+
+$$\text{sum of interior angles} = (n - 2) \times 180^\circ \qquad \text{sum of exterior angles} = 360^\circ$$
+
+For a **regular** polygon (all sides and angles equal):
+
+$$\text{exterior angle} = \frac{360^\circ}{n} \qquad \text{interior angle} = 180^\circ - \text{exterior angle}$$
+
+| Polygon | $n$ | Interior angle sum | Each angle (regular) |
+|---|---|---|---|
+| Triangle | 3 | $180^\circ$ | $60^\circ$ |
+| Quadrilateral | 4 | $360^\circ$ | $90^\circ$ |
+| Pentagon | 5 | $540^\circ$ | $108^\circ$ |
+| Hexagon | 6 | $720^\circ$ | $120^\circ$ |
+| Octagon | 8 | $1080^\circ$ | $135^\circ$ |
+
+<Mistake>
+Interior and exterior angles are on the **same straight line** and add to $180^\circ$. A common error is to treat them as the same.
+</Mistake>
+
+## Worked example
+
+Each exterior angle of a regular polygon is $24^\circ$. How many sides?
+
+$$n = \frac{360}{24} = 15$$

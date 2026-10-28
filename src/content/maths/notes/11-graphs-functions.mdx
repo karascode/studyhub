@@ -1,0 +1,63 @@
+export const meta = {
+  topic: 'algebra',
+  title: 'Graphs of functions and function notation',
+  summary: 'Recognising and sketching linear, quadratic, cubic, reciprocal and exponential graphs, and f(x), composite and inverse functions.',
+  keywords: ['graph', 'quadratic graph', 'cubic', 'reciprocal', 'exponential', 'asymptote', 'function', 'f(x)', 'composite function', 'inverse function', 'GDC', 'sketch'],
+  level: 'all',
+}
+
+# Graphs of functions and function notation
+
+<Key>
+The **shape** of a graph tells you the type of function. Use a graphic calculator (GDC) to plot and read values, and **sketch** the main features: where it crosses the axes and its general shape.
+</Key>
+
+## Standard shapes
+
+| Equation | Shape | Key features |
+|---|---|---|
+| $y = mx + c$ | straight line | gradient $m$, $y$-intercept $c$ |
+| $y = ax^2 + bx + c$ | **parabola** (U or ∩) | symmetric; turning point |
+| $y = ax^3 + \dots$ | cubic (S-shape) | up to 2 turning points |
+| $y = \dfrac{k}{x}$ | **reciprocal** (two branches) | asymptotes at the axes |
+| $y = a^x$ | **exponential** | passes through $(0,1)$, rises (or falls) steeply |
+
+- A **positive** $x^2$ coefficient gives a **U** shape (minimum); a **negative** one gives ∩ (maximum).
+- An **asymptote** is a line the curve gets closer to but never reaches.
+
+## Using the GDC
+
+1. Enter the function and choose a sensible **window** (x and y ranges).
+2. Use the calculator to find **roots** (where $y = 0$), **turning points** (maximum or minimum) and **intersections** with another graph.
+3. Write down coordinates to **3 significant figures**.
+
+<Tip>
+If a graph looks wrong, check your window. Part of the curve may be off the screen.
+</Tip>
+
+## Solving using graphs
+
+- Solutions of $f(x) = 0$ are where the graph crosses the $x$-axis.
+- Solutions of $f(x) = g(x)$ are the $x$-coordinates of the **intersection points** of the two graphs.
+
+## Function notation
+
+$f(x)$ means "the function $f$ with input $x$". If $f(x) = 3x - 2$ then $f(4) = 10$ and $f(-1) = -5$.
+
+<Ext>
+**Composite function** $fg(x)$ means "do $g$ first, then $f$". With $f(x) = x + 1$ and $g(x) = x^2$: $fg(3) = f(9) = 10$, but $gf(3) = g(4) = 16$. Order matters.
+
+**Inverse function** $f^{-1}(x)$ undoes $f$. For $f(x) = 3x - 2$: write $y = 3x - 2$, swap $x$ and $y$ to get $x = 3y - 2$, then $y = \dfrac{x+2}{3}$. So $f^{-1}(x) = \dfrac{x+2}{3}$.
+</Ext>
+
+<Mistake>
+$f^{-1}(x)$ is **not** $\dfrac{1}{f(x)}$. It means the inverse function.
+</Mistake>
+
+## Worked example
+
+Sketch $y = x^2 - 4x - 5$.
+
+- Factorise: $(x - 5)(x + 1)$, so it crosses the $x$-axis at $x = 5$ and $x = -1$.
+- At $x = 0$, $y = -5$.
+- $U$-shaped. The turning point is halfway between the roots, at $x = 2$, where $y = 4 - 8 - 5 = -9$, so the minimum is $(2, -9)$.

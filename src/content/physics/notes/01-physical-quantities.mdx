@@ -1,0 +1,104 @@
+export const meta = {
+  code: '1.1',
+  topic: 'motion-forces-energy',
+  title: 'Physical quantities and measurement',
+  summary: 'SI units and prefixes, measuring length, volume and time, scalars and vectors, and finding a resultant.',
+  keywords: ['SI units', 'prefix', 'micrometer', 'vernier', 'measuring cylinder', 'pendulum', 'period', 'scalar', 'vector', 'resultant'],
+  level: 'all',
+}
+
+# Physical quantities and measurement
+
+<Key>
+A **physical quantity** is something you can measure. Every measurement is a **number and a unit**. Physics uses the **SI** (Système International) units so that everyone's results can be compared.
+</Key>
+
+## SI base units you need
+
+| Quantity | Symbol | SI unit | Unit symbol |
+|---|---|---|---|
+| length | $l$ | metre | m |
+| mass | $m$ | kilogram | kg |
+| time | $t$ | second | s |
+| temperature | $T$ | kelvin | K |
+| electric current | $I$ | ampere | A |
+
+Other units are built from these. For example speed is m/s, and the newton is $\text{kg m/s}^2$.
+
+## Prefixes
+
+| Prefix | Symbol | Multiplier |
+|---|---|---|
+| giga | G | $10^{9}$ |
+| mega | M | $10^{6}$ |
+| kilo | k | $10^{3}$ |
+| centi | c | $10^{-2}$ |
+| milli | m | $10^{-3}$ |
+| micro | $\mu$ | $10^{-6}$ |
+| nano | n | $10^{-9}$ |
+
+<Mistake>
+Converting areas and volumes. $1\ \text{m} = 100\ \text{cm}$ but $1\ \text{m}^2 = 10\,000\ \text{cm}^2$ and $1\ \text{m}^3 = 1\,000\,000\ \text{cm}^3$. You must square or cube the conversion factor.
+</Mistake>
+
+## Measuring length
+
+- A **metre rule** measures to the nearest millimetre. Place the scale right against the object and view from directly above to avoid **parallax error**.
+- For small lengths use **vernier calipers** or a **micrometer screw gauge**, which read to $0.01\ \text{mm}$ or better.
+- To measure something very thin, such as the thickness of a sheet of paper, measure a **stack** of $n$ sheets and divide:
+
+$$\text{thickness of one sheet} = \frac{\text{thickness of stack}}{n}$$
+
+## Measuring volume
+
+- **Regular solid:** use $V = l \times w \times h$.
+- **Liquid:** pour into a **measuring cylinder** and read the scale at the bottom of the meniscus with your eye level with it.
+- **Irregular solid:** measure the rise in water level when the object is lowered into a measuring cylinder (**displacement**).
+
+## Measuring time
+
+Use a stopwatch or digital timer. Human reaction time (about $0.2\ \text{s}$) is a big source of error for short times, so time a **long interval** or many repeats.
+
+### The pendulum
+
+A pendulum's **period** $T$ is the time for one complete swing (out and back).
+
+1. Time **20 oscillations** with a stopwatch.
+2. Divide by 20 to get the period. Timing many swings reduces the percentage error from your reaction time.
+
+$$T = \frac{\text{total time}}{\text{number of oscillations}}$$
+
+<Tip>
+"Describe how to find the period accurately" always means: time many oscillations, then divide. Say it, and say why (it reduces the effect of reaction time).
+</Tip>
+
+## Scalars and vectors
+
+- A **scalar** has **size only**: distance, speed, mass, time, energy, temperature.
+- A **vector** has **size and direction**: displacement, velocity, acceleration, force, weight, momentum.
+
+| Scalar | Vector |
+|---|---|
+| distance | displacement |
+| speed | velocity |
+| mass | weight |
+
+## Adding vectors (resultant)
+
+The **resultant** is the single vector that has the same effect as two or more vectors acting together.
+
+- **Same direction:** add the sizes.
+- **Opposite directions:** subtract the sizes. The resultant points the way of the larger one.
+- **At right angles:** use Pythagoras.
+
+$$R = \sqrt{a^2 + b^2}$$
+
+<Ext>
+For vectors at right angles you may also be asked for the **direction** of the resultant: $\tan\theta = \dfrac{\text{opposite}}{\text{adjacent}}$. Alternatively, draw a **scale diagram**: draw the vectors tip-to-tail to a stated scale and measure the length and angle of the resultant.
+</Ext>
+
+## Worked example
+
+A boat is pushed east at $3\ \text{m/s}$ by its engine and north at $4\ \text{m/s}$ by a current.
+
+$$R = \sqrt{3^2 + 4^2} = 5\ \text{m/s} \qquad \theta = \tan^{-1}\!\left(\tfrac{4}{3}\right) = 53^\circ \text{ north of east}$$

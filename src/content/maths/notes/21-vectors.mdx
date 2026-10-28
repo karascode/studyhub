@@ -1,0 +1,61 @@
+export const meta = {
+  topic: 'transformations',
+  title: 'Vectors',
+  summary: 'Column vectors, magnitude, adding and subtracting vectors, scalar multiples and vector geometry.',
+  keywords: ['vector', 'column vector', 'magnitude', 'scalar multiple', 'position vector', 'parallel vectors', 'vector geometry', 'resultant'],
+  level: 'all',
+}
+
+# Vectors
+
+<Key>
+A **vector** has **size and direction**. A **scalar** has size only. Vectors can be written as column vectors $\begin{pmatrix} x \\ y \end{pmatrix}$, or as a letter in bold or with an arrow, $\mathbf{a}$ or $\overrightarrow{AB}$.
+</Key>
+
+## Column vectors
+
+$\begin{pmatrix} 4 \\ -3 \end{pmatrix}$ means 4 units right and 3 units down.
+
+If $A = (1, 5)$ and $B = (6, 2)$ then
+$$\overrightarrow{AB} = \begin{pmatrix} 6 - 1 \\ 2 - 5 \end{pmatrix} = \begin{pmatrix} 5 \\ -3 \end{pmatrix}$$
+
+Going the other way gives the **negative**: $\overrightarrow{BA} = -\overrightarrow{AB}$.
+
+## Adding, subtracting and scalar multiples
+
+Work with each component:
+
+$$\begin{pmatrix} 2 \\ 3 \end{pmatrix} + \begin{pmatrix} 4 \\ -1 \end{pmatrix} = \begin{pmatrix} 6 \\ 2 \end{pmatrix} \qquad 3\begin{pmatrix} 2 \\ -1 \end{pmatrix} = \begin{pmatrix} 6 \\ -3 \end{pmatrix}$$
+
+- **Parallel** vectors are scalar multiples of each other.
+- Adding vectors tip-to-tail gives the **resultant**.
+
+## Magnitude
+
+The length of $\begin{pmatrix} x \\ y \end{pmatrix}$ is found with Pythagoras:
+
+$$\left|\begin{pmatrix} x \\ y \end{pmatrix}\right| = \sqrt{x^2 + y^2}$$
+
+Example: $\left|\begin{pmatrix} 5 \\ 12 \end{pmatrix}\right| = 13$.
+
+## Vector geometry
+
+Express routes between points in terms of known vectors, using $\overrightarrow{AB} = \mathbf{b} - \mathbf{a}$ when $\mathbf{a}$ and $\mathbf{b}$ are the **position vectors** of $A$ and $B$.
+
+- The **midpoint** $M$ of $AB$: $\overrightarrow{OM} = \tfrac12(\mathbf{a} + \mathbf{b})$.
+- If $\overrightarrow{AB} = k\,\overrightarrow{CD}$, the lines are **parallel**.
+- If $\overrightarrow{AB} = k\,\overrightarrow{AC}$ (sharing a point), then $A$, $B$, $C$ lie on a **straight line**.
+
+<Tip>
+For vector geometry problems: find a path from the start to the end using vectors you know, going along the route and writing each step. Replace backwards steps with a minus sign.
+</Tip>
+
+<Mistake>
+Writing $\overrightarrow{AB} = \mathbf{a} - \mathbf{b}$. It is **end minus start**: $\mathbf{b} - \mathbf{a}$.
+</Mistake>
+
+## Worked example
+
+$\overrightarrow{OA} = \mathbf{a}$ and $\overrightarrow{OB} = \mathbf{b}$. $M$ is the midpoint of $AB$. Find $\overrightarrow{OM}$.
+
+$$\overrightarrow{AB} = \mathbf{b} - \mathbf{a} \;\Rightarrow\; \overrightarrow{OM} = \mathbf{a} + \tfrac12(\mathbf{b} - \mathbf{a}) = \tfrac12(\mathbf{a} + \mathbf{b})$$

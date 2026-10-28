@@ -1,0 +1,82 @@
+export const meta = {
+  code: '2.2',
+  topic: 'thermal',
+  title: 'Melting, boiling, evaporation and latent heat',
+  summary: 'Melting and boiling, heating and cooling curves, evaporation and what affects it, and specific latent heat.',
+  keywords: ['melting point', 'boiling point', 'evaporation', 'cooling curve', 'heating curve', 'latent heat', 'specific latent heat', 'condensation', 'solidifying', 'fusion', 'vaporisation'],
+  level: 'all',
+}
+
+# Melting, boiling, evaporation and latent heat
+
+<Key>
+During a change of state, energy is **supplied or released but the temperature stays constant**. The energy changes how the particles are **arranged and held together**, not how fast they move.
+</Key>
+
+## Melting and boiling
+
+- **Melting point:** the temperature at which a solid becomes a liquid. It is the same temperature as the **freezing point** (for a pure substance).
+- **Boiling point:** the temperature at which a liquid boils throughout.
+- Pure substances change state at **sharp, fixed** temperatures: pure ice melts at $0\,^\circ\text{C}$ and pure water boils at $100\,^\circ\text{C}$ at normal atmospheric pressure. Impurities make the melting point lower and the boiling point higher.
+
+## Heating curve
+
+If you heat ice steadily, a temperature–time graph looks like this:
+
+1. **Ice warming**: temperature rises.
+2. **Flat section at $0\,^\circ\text{C}$**: ice **melting**. Energy goes into breaking the bonds between particles, not into raising their kinetic energy.
+3. **Water warming**: temperature rises.
+4. **Flat section at $100\,^\circ\text{C}$**: water **boiling**.
+5. **Steam warming**: temperature rises.
+
+A **cooling curve** is the reverse: flat sections at the condensing and freezing points, where energy released by the particles forming bonds keeps the temperature steady.
+
+<Tip>
+In a "why is the line flat?" question: "**The energy supplied is used to break the forces between particles (overcome the intermolecular forces), not to increase the kinetic energy, so the temperature stays constant.**"
+</Tip>
+
+## Evaporation
+
+**Evaporation** is the escape of the **fastest (most energetic) particles from the surface** of a liquid, at **any temperature** below the boiling point.
+
+| | Evaporation | Boiling |
+|---|---|---|
+| Where | surface only | throughout the liquid (bubbles) |
+| Temperature | any temperature | only at the boiling point |
+| Speed | slow | fast |
+
+### Cooling by evaporation
+
+The fastest particles leave, so the **average kinetic energy of the remaining liquid falls**, and the liquid **cools**. This is why sweating cools you down and why a wet towel cools a bottle.
+
+### Factors that increase evaporation rate
+
+- **Higher temperature** (more particles have enough energy to escape)
+- **Larger surface area**
+- **Moving air** (wind carries away the escaped particles, so fewer return)
+- **Lower humidity** (drier surrounding air)
+
+## Specific latent heat
+
+<Ext>
+The **specific latent heat** $L$ of a substance is the energy needed to change the state of **$1\ \text{kg}$** of it **without any change in temperature**.
+
+$$Q = m L$$
+
+- **Specific latent heat of fusion** $L_f$: solid ↔ liquid. For ice, $L_f = 3.3 \times 10^5\ \text{J/kg}$.
+- **Specific latent heat of vaporisation** $L_v$: liquid ↔ gas. For water, $L_v = 2.3 \times 10^6\ \text{J/kg}$.
+
+$L_v$ is much larger than $L_f$ because to boil a liquid the particles must be **completely separated**, which needs far more energy.
+</Ext>
+
+### Worked examples
+
+**1.** Energy to melt $0.40\ \text{kg}$ of ice at $0\,^\circ\text{C}$:
+$$Q = mL_f = 0.40 \times 3.3\times10^5 = 1.3\times10^5\ \text{J}$$
+
+**2.** A $2.0\ \text{kW}$ heater boils off $0.10\ \text{kg}$ of water already at $100\,^\circ\text{C}$. Time taken (no losses):
+$$Q = mL_v = 0.10 \times 2.3\times10^6 = 2.3\times10^5\ \text{J} \qquad t = \frac{Q}{P} = \frac{2.3\times10^5}{2000} = 115\ \text{s}$$
+
+<Mistake>
+Using $Q = mc\Delta\theta$ during a change of state. There is **no temperature change**, so $\Delta\theta = 0$; use $Q = mL$ instead.
+</Mistake>

@@ -1,0 +1,74 @@
+export const meta = {
+  code: '2.2',
+  topic: 'thermal',
+  title: 'Specific heat capacity',
+  summary: 'Thermal capacity, specific heat capacity, the equation Q = mcΔθ and the electrical heating experiment.',
+  keywords: ['specific heat capacity', 'thermal capacity', 'Q=mcΔθ', 'joule', 'electrical heater', 'calorimeter', 'temperature rise'],
+  level: 'all',
+}
+
+# Specific heat capacity
+
+<Key>
+Different materials need different amounts of energy to warm up. The **specific heat capacity** $c$ of a substance is the energy needed to raise the temperature of **$1\ \text{kg}$** of it by **$1\,^\circ\text{C}$** (or $1\ \text{K}$).
+</Key>
+
+## Thermal capacity vs specific heat capacity
+
+- **Thermal (heat) capacity** is the energy needed to raise the temperature of a **whole object** by $1\,^\circ\text{C}$. Unit: J/°C.
+- **Specific heat capacity** is per **kilogram**. Unit: $\text{J/(kg}\,^\circ\text{C)}$.
+
+$$\text{thermal capacity} = m c$$
+
+Water has an unusually **high** specific heat capacity, $c = 4200\ \text{J/(kg}\,^\circ\text{C)}$. It takes a lot of energy to warm water and it holds heat a long time. This is why water is used in central heating and car cooling systems, and why coastal climates are milder than inland.
+
+| Material | $c$ in $\text{J/(kg}\,^\circ\text{C)}$ |
+|---|---|
+| water | 4200 |
+| ice | 2100 |
+| aluminium | 900 |
+| copper | 390 |
+| iron | 450 |
+
+## The equation
+
+$$Q = m c \Delta\theta$$
+
+- $Q$ is the **thermal energy transferred** (J).
+- $m$ is the mass (kg).
+- $c$ is the specific heat capacity.
+- $\Delta\theta$ is the **change in temperature** (final minus initial) in °C.
+
+Rearranged:
+
+$$c = \frac{Q}{m\,\Delta\theta} \qquad \Delta\theta = \frac{Q}{mc}$$
+
+<Mistake>
+Using grams. Convert the mass to **kg** (e.g. $500\ \text{g} = 0.5\ \text{kg}$) before using $c$ in J/(kg °C). Also, $\Delta\theta$ is a **difference**, not the final temperature.
+</Mistake>
+
+## Experiment: measuring the specific heat capacity of a metal block
+
+1. Use a block of mass $m$ with two holes: one for an **electric heater**, one for a **thermometer** (add a drop of oil in the thermometer hole for good thermal contact).
+2. **Insulate** the block (wrap it in lagging) to reduce heat loss.
+3. Record the starting temperature, then switch on the heater and the **joulemeter** (or ammeter, voltmeter and stopwatch).
+4. Heat for a few minutes, record the final temperature and the electrical energy supplied $E = IVt$.
+5. Use $c = \dfrac{E}{m\,\Delta\theta}$.
+
+**Sources of error:** heat escapes to the surroundings, so the measured $c$ is too **large** (energy input is more than the energy that warmed the block). Insulation reduces this.
+
+<Tip>
+In the same practical for **water**, stir continuously so the temperature is the same throughout, and use a lid.
+</Tip>
+
+## Worked examples
+
+**1.** Energy to warm $2.0\ \text{kg}$ of water from $20\,^\circ\text{C}$ to $70\,^\circ\text{C}$:
+$$Q = mc\Delta\theta = 2.0 \times 4200 \times 50 = 420\,000\ \text{J}$$
+
+**2.** A $0.50\ \text{kg}$ metal block is given $9000\ \text{J}$ of energy and its temperature rises by $20\,^\circ\text{C}$. Its specific heat capacity is:
+$$c = \frac{Q}{m\Delta\theta} = \frac{9000}{0.50 \times 20} = 900\ \text{J/(kg}\,^\circ\text{C)}$$
+(This is aluminium.)
+
+**3.** A $1.5\ \text{kW}$ kettle contains $1.0\ \text{kg}$ of water. How long to raise it by $60\,^\circ\text{C}$ assuming no losses?
+$$Q = 1.0 \times 4200 \times 60 = 252\,000\ \text{J} \qquad t = \frac{Q}{P} = \frac{252\,000}{1500} = 168\ \text{s}$$

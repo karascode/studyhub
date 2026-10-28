@@ -1,0 +1,70 @@
+export const meta = {
+  topic: 'statistics',
+  title: 'Cumulative frequency and box plots',
+  summary: 'Drawing cumulative frequency curves, reading the median and quartiles, and comparing distributions with box plots.',
+  keywords: ['cumulative frequency', 'median', 'quartile', 'interquartile range', 'box plot', 'percentile', 'spread', 'comparing distributions'],
+  level: 'all',
+}
+
+# Cumulative frequency and box plots
+
+<Key>
+**Cumulative frequency** is a **running total** of the frequencies. Plotting it gives a curve from which you can read the median and quartiles.
+</Key>
+
+## Building the table
+
+| Mass $m$ (kg) | Frequency | Cumulative frequency |
+|---|---|---|
+| $0 < m \le 10$ | 4 | 4 |
+| $10 < m \le 20$ | 11 | 15 |
+| $20 < m \le 30$ | 20 | 35 |
+| $30 < m \le 40$ | 10 | 45 |
+| $40 < m \le 50$ | 5 | 50 |
+
+## Drawing the curve
+
+1. Plot cumulative frequency against the **upper class boundary** (10, 20, 30, 40, 50).
+2. Plot $(0, 0)$ as the starting point.
+3. Join with a **smooth curve** (a shallow S shape).
+
+<Mistake>
+Plotting against the class **midpoint** or the lower boundary. A cumulative frequency graph uses the **upper boundary**, because that is the point by which that many values have been counted.
+</Mistake>
+
+## Reading the median and quartiles
+
+With total frequency $N$ (here 50):
+
+| Measure | Position | Read at |
+|---|---|---|
+| **Lower quartile** $Q_1$ | $\tfrac14 N = 12.5$ | $m$ when CF $= 12.5$ |
+| **Median** $Q_2$ | $\tfrac12 N = 25$ | $m$ when CF $= 25$ |
+| **Upper quartile** $Q_3$ | $\tfrac34 N = 37.5$ | $m$ when CF $= 37.5$ |
+
+Draw a line **across** from the CF value to the curve, then **down** to read the value. Draw these lines on your graph to show method.
+
+$$\text{interquartile range (IQR)} = Q_3 - Q_1$$
+
+The IQR is the spread of the **middle 50%** of the data and is not affected by outliers. Percentiles work the same way: the 90th percentile is read at $0.9N$.
+
+You can also read how many values are **above or below** a given value, e.g. "number heavier than 35 kg $= 50 -$ CF at 35".
+
+## Box plots
+
+A **box-and-whisker plot** shows five values: **minimum**, $Q_1$, **median**, $Q_3$, **maximum**. The box spans $Q_1$ to $Q_3$ with a line at the median; whiskers go to the minimum and maximum.
+
+## Comparing two distributions
+
+Always make **two comments**, in context:
+
+1. An **average** (compare medians): "On average group A is heavier because its median is higher."
+2. The **spread** (compare IQRs or ranges): "Group B is more consistent because its IQR is smaller."
+
+<Tip>
+Say what the numbers **mean** in the situation. "A has a higher median" alone is not enough; add "so A's mass is higher on average".
+</Tip>
+
+## Worked example
+
+From a curve, $Q_1 = 16$ and $Q_3 = 32$. The IQR $= 32 - 16 = 16$.

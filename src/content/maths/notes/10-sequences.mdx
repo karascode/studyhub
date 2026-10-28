@@ -1,0 +1,65 @@
+export const meta = {
+  topic: 'algebra',
+  title: 'Sequences',
+  summary: 'Arithmetic and geometric sequences, finding the nth term and special sequences.',
+  keywords: ['sequence', 'nth term', 'arithmetic', 'geometric', 'common difference', 'common ratio', 'quadratic sequence', 'fibonacci'],
+  level: 'all',
+}
+
+# Sequences
+
+<Key>
+A **sequence** is a list of numbers that follows a rule. The **term-to-term rule** says how to get the next term; the **nth term** formula gives any term directly.
+</Key>
+
+## Linear (arithmetic) sequences
+
+The difference between terms is constant.
+
+$$3,\ 7,\ 11,\ 15,\ \dots \qquad d = 4$$
+
+The nth term is $a + (n-1)d$, which simplifies to $dn + (a - d)$:
+
+$$T_n = 4n - 1$$
+
+Check: $n = 1$ gives 3 ✓, $n = 4$ gives 15 ✓.
+
+**Is a number in the sequence?** Set $4n - 1 = 99 \Rightarrow n = 25$ (a whole number, so yes). $4n - 1 = 50 \Rightarrow n = 12.75$ (not whole, so no).
+
+## Geometric sequences
+
+Each term is multiplied by the same **common ratio** $r$.
+
+$$2,\ 6,\ 18,\ 54,\ \dots \qquad r = 3 \qquad T_n = 2 \times 3^{n-1}$$
+
+<Ext>
+Sequences like $5, 5.25, 5.51, \dots$ (increase of 5% each time) are geometric with $r = 1.05$. This is **compound growth**; if $r < 1$ it is decay.
+</Ext>
+
+## Quadratic sequences
+
+<Ext>
+The **second difference** is constant. Terms: $2, 6, 12, 20, 30$. First differences: $4, 6, 8, 10$. Second differences: $2, 2, 2$.
+
+The $n^2$ coefficient is **half** the second difference, here $1$. Subtract $n^2$ from each term: $1, 2, 3, 4, 5$, which is $n$. So $T_n = n^2 + n$.
+</Ext>
+
+## Special sequences
+
+| Sequence | Terms | nth term |
+|---|---|---|
+| **Square numbers** | 1, 4, 9, 16, 25 | $n^2$ |
+| **Cube numbers** | 1, 8, 27, 64 | $n^3$ |
+| **Triangular numbers** | 1, 3, 6, 10, 15 | $\tfrac12 n(n+1)$ |
+| **Powers of 2** | 2, 4, 8, 16 | $2^n$ |
+| **Fibonacci** | 1, 1, 2, 3, 5, 8 | add the previous two terms |
+
+<Mistake>
+Writing the nth term as "+4" or "add 4". That is the term-to-term rule. The nth term is a **formula in $n$**, like $4n - 1$.
+</Mistake>
+
+## Worked example
+
+The sequence $5, 9, 13, 17, \dots$ has $d = 4$, so the nth term starts $4n$. The first term would be 4 but it is 5, so add 1:
+
+$$T_n = 4n + 1 \qquad T_{20} = 81$$

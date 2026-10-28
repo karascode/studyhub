@@ -1,0 +1,71 @@
+export const meta = {
+  topic: 'number',
+  title: 'Types of number and sets',
+  summary: 'Natural numbers to irrational numbers, primes, factors, HCF and LCM, and set notation with Venn diagrams.',
+  keywords: ['prime', 'factor', 'multiple', 'HCF', 'LCM', 'rational', 'irrational', 'integer', 'set', 'Venn diagram', 'union', 'intersection', 'complement', 'subset'],
+  level: 'all',
+}
+
+# Types of number and sets
+
+<Key>
+Numbers are grouped into families. A **set** is a collection of objects (elements). Sets and **Venn diagrams** give a clear way to sort and count them.
+</Key>
+
+## Types of number
+
+| Type | Description | Examples |
+|---|---|---|
+| **Natural** (counting) | $1, 2, 3, \dots$ | 7, 120 |
+| **Integer** | whole numbers, positive, negative or zero | $-4, 0, 9$ |
+| **Prime** | exactly two factors (1 and itself) | 2, 3, 5, 7, 11 |
+| **Square** | $n^2$ | 1, 4, 9, 16 |
+| **Cube** | $n^3$ | 1, 8, 27, 64 |
+| **Rational** | can be written as a fraction $\tfrac{a}{b}$ | $\tfrac34$, 0.25, $-5$, 0.333… |
+| **Irrational** | cannot be written as a fraction; decimals do not end or repeat | $\pi$, $\sqrt{2}$ |
+
+<Mistake>
+1 is **not** a prime number (it has only one factor). 2 is the only **even** prime.
+</Mistake>
+
+## Factors, multiples, HCF and LCM
+
+- **Factors** of 12: 1, 2, 3, 4, 6, 12. **Multiples** of 4: 4, 8, 12, …
+- Write a number as a **product of prime factors** with a factor tree: $60 = 2^2 \times 3 \times 5$.
+- **HCF** (highest common factor) is the largest number dividing both. **LCM** (lowest common multiple) is the smallest number both divide into.
+
+For $36 = 2^2 \times 3^2$ and $48 = 2^4 \times 3$:
+
+$$\text{HCF} = 2^2 \times 3 = 12 \qquad \text{LCM} = 2^4 \times 3^2 = 144$$
+
+(HCF uses the **lowest** power of each prime; LCM uses the **highest**.)
+
+## Set notation
+
+| Symbol | Meaning |
+|---|---|
+| $x \in A$ | $x$ is an element of $A$ |
+| $A \cup B$ | **union**: in $A$ or $B$ (or both) |
+| $A \cap B$ | **intersection**: in both $A$ and $B$ |
+| $A'$ | **complement**: everything in $\xi$ not in $A$ |
+| $\xi$ | the universal set |
+| $\varnothing$ | the empty set |
+| $A \subset B$ | $A$ is a subset of $B$ |
+| $n(A)$ | number of elements in $A$ |
+
+## Venn diagrams
+
+Draw a rectangle for $\xi$ and overlapping circles for sets. **Fill in the overlap first**, then the rest of each circle, then outside.
+
+$$n(A \cup B) = n(A) + n(B) - n(A \cap B)$$
+
+## Worked example
+
+In a class of 30, 18 play football ($F$), 12 play tennis ($T$) and 5 play both.
+
+- $n(F \cap T) = 5$, football only $= 18 - 5 = 13$, tennis only $= 12 - 5 = 7$.
+- Play at least one: $13 + 5 + 7 = 25$, so $30 - 25 = 5$ play neither.
+
+<Tip>
+Check that the numbers in all regions add to $n(\xi)$. A mismatch means a region is wrong.
+</Tip>

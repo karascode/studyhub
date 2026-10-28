@@ -1,0 +1,57 @@
+export const meta = {
+  topic: 'coordinate',
+  title: 'Straight lines: gradient, equation and length',
+  summary: 'Gradient, y = mx + c, midpoints, distance between points, and parallel and perpendicular lines.',
+  keywords: ['gradient', 'y=mx+c', 'midpoint', 'distance', 'parallel', 'perpendicular', 'equation of a line', 'coordinates'],
+  level: 'all',
+}
+
+# Straight lines: gradient, equation and length
+
+<Key>
+A straight line has a constant **gradient** $m$ (steepness) and crosses the $y$-axis at the **intercept** $c$. Its equation is $y = mx + c$.
+</Key>
+
+## Gradient
+
+$$m = \frac{\text{change in } y}{\text{change in } x} = \frac{y_2 - y_1}{x_2 - x_1}$$
+
+- Positive gradient: rises left to right. Negative: falls. Zero: horizontal. Vertical lines have undefined gradient.
+- Through $(1, 2)$ and $(5, 10)$: $m = \dfrac{10 - 2}{5 - 1} = 2$.
+
+## The equation $y = mx + c$
+
+- Read $m$ and $c$ directly: $y = 3x - 4$ has gradient 3 and cuts the $y$-axis at $-4$.
+- Rearrange when needed: $2y = 6x + 8$ becomes $y = 3x + 4$.
+- To find the equation given a point $(x_1, y_1)$ and the gradient: $y - y_1 = m(x - x_1)$.
+
+Line through $(2, 5)$ with gradient 3: $y - 5 = 3(x - 2) \Rightarrow y = 3x - 1$.
+
+## Midpoint and length
+
+Between $A(x_1, y_1)$ and $B(x_2, y_2)$:
+
+$$\text{midpoint} = \left(\frac{x_1 + x_2}{2},\ \frac{y_1 + y_2}{2}\right) \qquad AB = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
+
+The length is just **Pythagoras** on the horizontal and vertical differences.
+
+For $A(1, 2)$ and $B(7, 10)$: midpoint $(4, 6)$ and $AB = \sqrt{6^2 + 8^2} = 10$.
+
+## Parallel and perpendicular lines
+
+- **Parallel** lines have the **same gradient**.
+- **Perpendicular** lines have gradients that **multiply to $-1$**: $m_1 \times m_2 = -1$.
+
+<Ext>
+If one line has gradient $\tfrac23$, a perpendicular line has gradient $-\tfrac32$ (flip it and change the sign).
+</Ext>
+
+<Mistake>
+Subtracting coordinates in different orders for $x$ and $y$. Use the **same order** (second − first) for both.
+</Mistake>
+
+## Worked example
+
+Find the equation of the line through $A(0, 1)$ perpendicular to $y = 2x + 5$.
+
+The perpendicular gradient is $-\tfrac12$. The intercept is 1, so $y = -\tfrac12 x + 1$.

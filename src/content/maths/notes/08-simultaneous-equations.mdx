@@ -1,0 +1,63 @@
+export const meta = {
+  topic: 'algebra',
+  title: 'Simultaneous equations',
+  summary: 'Solving pairs of linear equations by elimination and substitution, and using a graphic calculator.',
+  keywords: ['simultaneous equations', 'elimination', 'substitution', 'graph', 'intersection', 'GDC', 'linear and quadratic'],
+  level: 'all',
+}
+
+# Simultaneous equations
+
+<Key>
+Two equations with two unknowns are solved **together**. The solution is the pair $(x, y)$ that satisfies both. Graphically it is the **point where the two lines cross**.
+</Key>
+
+## Method 1: elimination
+
+1. Make the coefficients of one letter the same (multiply an equation if needed).
+2. **Add** the equations if the signs are different; **subtract** if the signs are the same.
+3. Solve, then substitute back to find the other letter.
+
+Solve $3x + 2y = 16$ and $x - 2y = 0$.
+
+Add the equations (the $y$ terms cancel): $4x = 16 \Rightarrow x = 4$. Then $4 - 2y = 0 \Rightarrow y = 2$.
+
+Check in equation 1: $3(4) + 2(2) = 16$. ✓
+
+## Method 2: substitution
+
+Useful when one equation already has a letter alone.
+
+$y = 2x - 1$ and $3x + y = 14$.
+
+$$3x + (2x - 1) = 14 \;\Rightarrow\; 5x = 15 \;\Rightarrow\; x = 3,\; y = 5$$
+
+## Method 3: graphic calculator
+
+In 0607 you may use the calculator's **simultaneous equation solver**, or draw both graphs and find the **intersection**. For "show that" or "solve by an algebraic method" questions you must still show working.
+
+<Tip>
+Always substitute your answers into the *other* equation to check. It takes ten seconds and catches arithmetic slips.
+</Tip>
+
+## Forming simultaneous equations
+
+Two adults and three children pay 31 for tickets. One adult and four children pay 29. Let adult $= a$ and child $= c$:
+$$2a + 3c = 31 \qquad a + 4c = 29$$
+Multiply the second by 2: $2a + 8c = 58$. Subtract: $5c = 27$, so $c = 5.4$ and $a = 7.4$.
+
+## One linear and one quadratic
+
+<Ext>
+Substitute the linear equation into the quadratic to get a quadratic in one letter, then solve.
+
+$y = x + 2$ and $y = x^2$: $x^2 = x + 2 \Rightarrow x^2 - x - 2 = 0 \Rightarrow (x-2)(x+1) = 0$.
+
+So $x = 2, y = 4$ or $x = -1, y = 1$. The line cuts the curve at **two points**.
+</Ext>
+
+## Worked example
+
+Solve $2x + y = 11$ and $x - y = 1$.
+
+Add: $3x = 12$, so $x = 4$. Then $y = x - 1 = 3$.

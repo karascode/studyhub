@@ -1,0 +1,57 @@
+export const meta = {
+  topic: 'algebra',
+  title: 'Solving quadratic equations',
+  summary: 'Solve quadratics by factorising, the quadratic formula and a graphic calculator.',
+  keywords: ['quadratic', 'factorise', 'quadratic formula', 'discriminant', 'roots', 'completing the square'],
+  level: 'all',
+}
+
+# Solving quadratic equations
+
+<Key>
+A **quadratic equation** has the form $ax^2 + bx + c = 0$ with $a \neq 0$. It has up to **two** solutions (roots).
+</Key>
+
+## Method 1: factorising
+
+1. Rearrange to $ax^2 + bx + c = 0$.
+2. Factorise into two brackets.
+3. Set each bracket equal to zero.
+
+$$x^2 + 5x + 6 = 0 \;\Rightarrow\; (x+2)(x+3) = 0 \;\Rightarrow\; x = -2 \text{ or } x = -3$$
+
+For $x^2 + bx + c$, find two numbers that **multiply to $c$** and **add to $b$**.
+
+## Method 2: the quadratic formula
+
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+Use this when the quadratic does not factorise neatly. Give answers to the accuracy asked for, usually 3 significant figures.
+
+## The discriminant
+
+$$\Delta = b^2 - 4ac$$
+
+| Value | Number of real roots |
+|---|---|
+| $\Delta > 0$ | two different roots |
+| $\Delta = 0$ | one repeated root |
+| $\Delta < 0$ | no real roots |
+
+## Method 3: graphic calculator
+
+Plot $y = ax^2 + bx + c$ and find where the graph crosses the $x$-axis (the roots), or use the polynomial/equation solver. Copy the sketch and write down the roots.
+
+<Tip>
+On 0607 papers the calculator is allowed, but a question that says "show that" or "factorise" requires algebraic working.
+</Tip>
+
+<Mistake>
+Forgetting to make one side zero first. $x^2 = 3x + 4$ is not $x = 3$ or $x = 4$. Rearrange: $x^2 - 3x - 4 = 0 \Rightarrow (x-4)(x+1) = 0$.
+</Mistake>
+
+## Worked example
+
+Solve $2x^2 + 3x - 5 = 0$ using the formula.
+
+$$x = \frac{-3 \pm \sqrt{9 + 40}}{4} = \frac{-3 \pm 7}{4} \;\Rightarrow\; x = 1 \text{ or } x = -2.5$$

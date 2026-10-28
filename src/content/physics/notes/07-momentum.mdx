@@ -1,0 +1,75 @@
+export const meta = {
+  code: '1.6',
+  topic: 'motion-forces-energy',
+  title: 'Momentum and impulse',
+  summary: 'Momentum, conservation of momentum in collisions and explosions, and impulse as change in momentum.',
+  keywords: ['momentum', 'conservation of momentum', 'collision', 'explosion', 'impulse', 'force', 'rate of change of momentum'],
+  level: 'all',
+}
+
+# Momentum and impulse
+
+<Key>
+**Momentum** is the product of an object's mass and its velocity. It is a **vector**, so direction matters.
+</Key>
+
+$$p = m v$$
+
+- $p$ is momentum (kg m/s), $m$ is mass (kg), $v$ is velocity (m/s).
+- A heavier or faster object has more momentum, and is harder to stop.
+
+## Conservation of momentum
+
+In any collision or explosion in a **closed system** (no external forces), the **total momentum before = total momentum after**.
+
+$$m_1 u_1 + m_2 u_2 = m_1 v_1 + m_2 v_2$$
+
+Choose one direction as **positive** (e.g. to the right) and give velocities in the opposite direction a **negative sign**.
+
+### Collision: bodies stick together
+
+A $2\ \text{kg}$ trolley moving at $3\ \text{m/s}$ hits a stationary $1\ \text{kg}$ trolley and they stick.
+
+$$2 \times 3 + 1 \times 0 = (2+1)\,v \;\Rightarrow\; v = \frac{6}{3} = 2\ \text{m/s}$$
+
+### Collision: bodies bounce apart
+
+A $0.5\ \text{kg}$ ball at $4\ \text{m/s}$ hits a stationary $1.5\ \text{kg}$ ball. After the collision the first ball moves at $2\ \text{m/s}$ in the **opposite** direction.
+
+$$0.5 \times 4 = 0.5 \times (-2) + 1.5\,v \;\Rightarrow\; 2 = -1 + 1.5\,v \;\Rightarrow\; v = 2\ \text{m/s}$$
+
+### Explosion
+
+Two trolleys at rest push apart with a spring. Total momentum before is **zero**, so after the explosion the momenta are equal and opposite:
+
+$$m_1 v_1 + m_2 v_2 = 0$$
+
+The lighter trolley moves off faster. A rifle recoils backwards when it fires a bullet forwards for the same reason.
+
+<Mistake>
+Forgetting direction. If one object moves left and the other right, one velocity must be negative. A common error is to add all the speeds as positive numbers.
+</Mistake>
+
+## Impulse and force
+
+Newton's second law can be written in terms of momentum. The resultant force is the **rate of change of momentum**:
+
+$$F = \frac{\Delta p}{\Delta t} = \frac{m v - m u}{t}$$
+
+The quantity $F \Delta t = \Delta p$ is the **impulse**, in N s (same as kg m/s).
+
+<Ext>
+To reduce the force in a collision you **increase the time** over which momentum changes. This is why **crumple zones, air bags, seat belts, cycle helmets** and **padded surfaces** keep people safe: the same change in momentum takes longer, so the average force is smaller.
+</Ext>
+
+## Worked examples
+
+**1.** A $1500\ \text{kg}$ car moving at $20\ \text{m/s}$ has momentum
+$$p = mv = 1500 \times 20 = 30\,000\ \text{kg m/s}$$
+
+**2.** A $0.16\ \text{kg}$ football is kicked from rest to $25\ \text{m/s}$ with a contact time of $0.02\ \text{s}$.
+$$F = \frac{\Delta p}{\Delta t} = \frac{0.16 \times 25}{0.02} = 200\ \text{N}$$
+
+<Tip>
+In a momentum calculation always write "momentum before = momentum after" first. That statement alone usually earns a mark.
+</Tip>

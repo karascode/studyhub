@@ -1,0 +1,65 @@
+export const meta = {
+  topic: 'transformations',
+  title: 'Transformations',
+  summary: 'Reflection, rotation, translation and enlargement, and how to describe each fully.',
+  keywords: ['reflection', 'rotation', 'translation', 'enlargement', 'transformation', 'mirror line', 'centre of rotation', 'scale factor', 'invariant', 'stretch'],
+  level: 'all',
+}
+
+# Transformations
+
+<Key>
+A transformation moves or changes a shape. The original is the **object** and the result is the **image**. To **describe** a transformation you must state the **type** and give **all** the details it needs.
+</Key>
+
+## Describing each transformation
+
+| Transformation | You must give | Shape changes? |
+|---|---|---|
+| **Reflection** | the **mirror line** (e.g. $x = 2$, $y = x$) | congruent |
+| **Rotation** | **angle**, **direction** (clockwise or anticlockwise), **centre** | congruent |
+| **Translation** | the **column vector** $\begin{pmatrix} x \\ y \end{pmatrix}$ | congruent |
+| **Enlargement** | the **scale factor** and the **centre** | similar (size changes) |
+
+Only **reflection** reverses orientation. Rotation, translation and enlargement keep it.
+
+<Mistake>
+Describing a transformation with two types at once, such as "rotate and move". Each answer must be **one** transformation with all its details.
+</Mistake>
+
+## Reflection
+
+Each point is the same distance from the mirror line as its image, on the opposite side. For the line $y = x$, swap the coordinates: $(2, 5) \to (5, 2)$. For the $x$-axis, change the sign of $y$: $(2, 5) \to (2, -5)$.
+
+## Rotation
+
+- A $180^\circ$ turn needs no direction.
+- Rotation about the origin by $90^\circ$ **anticlockwise**: $(x, y) \to (-y, x)$.
+- To find the centre, join matching points, draw the **perpendicular bisectors**: they meet at the centre.
+
+## Translation
+
+Every point moves the same amount. $\begin{pmatrix} 3 \\ -2 \end{pmatrix}$ means 3 to the right, 2 down.
+
+## Enlargement
+
+Multiply the distance of each point from the centre by the scale factor $k$.
+
+- $k > 1$: image is bigger. $0 < k < 1$: image is smaller (a **reduction**).
+- Lengths multiply by $k$, areas by $k^2$.
+
+<Ext>
+A **negative scale factor** puts the image on the **opposite side** of the centre (and inverted). With $k = -2$, the image is twice as large, on the other side.
+
+A **stretch** with scale factor $k$ and an invariant line (e.g. the $y$-axis) changes lengths in **one direction** only.
+</Ext>
+
+## Worked example
+
+Triangle $A$ has vertices $(1,1)$, $(3,1)$, $(1,2)$. Enlarge it with scale factor 2, centre the origin.
+
+Multiply each coordinate by 2: $(2,2)$, $(6,2)$, $(2,4)$.
+
+<Tip>
+Use tracing paper for rotations. And always check **orientation** and **size** against the original before choosing the transformation.
+</Tip>

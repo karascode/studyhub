@@ -1,0 +1,62 @@
+export const meta = {
+  topic: 'probability',
+  title: 'Probability',
+  summary: 'Probability scale, relative frequency, combined events, tree diagrams, Venn diagrams and conditional probability.',
+  keywords: ['probability', 'relative frequency', 'tree diagram', 'independent', 'mutually exclusive', 'conditional probability', 'with replacement', 'without replacement', 'expected'],
+  level: 'all',
+}
+
+# Probability
+
+<Key>
+Probability measures how likely an event is, from $0$ (impossible) to $1$ (certain). Write it as a **fraction, decimal or percentage**, never as a ratio or words like "1 in 5".
+</Key>
+
+## Basic probability
+
+$$P(\text{event}) = \frac{\text{number of favourable outcomes}}{\text{total number of equally likely outcomes}}$$
+
+- $P(\text{not } A) = 1 - P(A)$.
+- All the probabilities in a sample space add to 1.
+- **Expected number** $= P \times \text{number of trials}$. If $P(\text{six}) = \tfrac16$, expect 20 sixes in 120 rolls.
+
+## Relative frequency
+
+$$\text{relative frequency} = \frac{\text{number of times it happens}}{\text{total number of trials}}$$
+
+It is an **estimate** of probability from an experiment. More trials give a better estimate.
+
+## Combined events
+
+- **Mutually exclusive** (cannot both happen): $P(A \text{ or } B) = P(A) + P(B)$.
+- **Independent** (one does not affect the other): $P(A \text{ and } B) = P(A) \times P(B)$.
+
+"**OR**" means **add**; "**AND**" means **multiply**.
+
+A fair coin and a fair die: $P(\text{head and 6}) = \tfrac12 \times \tfrac16 = \tfrac{1}{12}$.
+
+## Tree diagrams
+
+Draw one set of branches for each event, label each branch with its probability. Multiply **along** the branches, add **between** outcomes. Each pair of branches from a point adds to 1.
+
+**Without replacement** (probabilities change): a bag has 3 red and 2 blue counters. Two are taken without replacing. $P(\text{both red}) = \tfrac35 \times \tfrac24 = \tfrac{6}{20} = \tfrac{3}{10}$.
+
+<Mistake>
+Forgetting that without replacement the **denominator drops by 1**, and the number of the colour just taken also drops.
+</Mistake>
+
+## Venn diagrams and probability
+
+Fill in the Venn diagram with counts, then use $P(A) = n(A)/n(\xi)$.
+
+<Ext>
+**Conditional probability** $P(B \mid A)$ is the probability of $B$ **given that** $A$ has happened. Restrict attention to $A$: $P(B \mid A) = \dfrac{n(A \cap B)}{n(A)}$.
+
+Of 40 students, 25 study French and 10 of those also study Spanish. $P(\text{Spanish} \mid \text{French}) = \tfrac{10}{25} = \tfrac25$.
+</Ext>
+
+## Worked example
+
+A bag contains 4 red and 6 green balls. Two are drawn **with replacement**. $P(\text{one of each colour})$:
+
+$$P(RG) + P(GR) = \tfrac{4}{10}\times\tfrac{6}{10} + \tfrac{6}{10}\times\tfrac{4}{10} = 0.24 + 0.24 = 0.48$$

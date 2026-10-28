@@ -1,0 +1,71 @@
+export const meta = {
+  topic: 'algebra',
+  title: 'Differentiation',
+  summary: 'The gradient of a curve, the derivative of powers of x, tangents, and finding stationary points. (Extended)',
+  keywords: ['differentiation', 'derivative', 'gradient', 'tangent', 'stationary point', 'turning point', 'maximum', 'minimum', 'rate of change'],
+  level: 'extended',
+}
+
+# Differentiation
+
+<Ext>
+This topic is **Extended** only.
+</Ext>
+
+<Key>
+The **derivative** $\dfrac{dy}{dx}$ gives the **gradient** of a curve at any point. It also measures the **rate of change** of $y$ with respect to $x$.
+</Key>
+
+## Differentiating powers of $x$
+
+$$y = ax^n \quad\Longrightarrow\quad \frac{dy}{dx} = a n x^{n-1}$$
+
+**Multiply by the power, then reduce the power by 1.**
+
+| $y$ | $\dfrac{dy}{dx}$ |
+|---|---|
+| $x^3$ | $3x^2$ |
+| $5x^2$ | $10x$ |
+| $4x$ | $4$ |
+| $7$ (a constant) | $0$ |
+| $\dfrac{1}{x} = x^{-1}$ | $-x^{-2} = -\dfrac{1}{x^2}$ |
+| $\sqrt{x} = x^{1/2}$ | $\tfrac12 x^{-1/2}$ |
+
+Differentiate **term by term**: $y = 2x^3 - 5x^2 + 3x - 4$ gives $\dfrac{dy}{dx} = 6x^2 - 10x + 3$.
+
+<Mistake>
+Forgetting to write powers first. Rewrite $\dfrac{3}{x^2}$ as $3x^{-2}$ before differentiating, giving $-6x^{-3}$.
+</Mistake>
+
+## Gradient and tangent
+
+1. Differentiate.
+2. Substitute the $x$-value to get the gradient $m$ of the **tangent**.
+3. Find $y$ at that point and use $y - y_1 = m(x - x_1)$ for the tangent's equation.
+
+For $y = x^2 + 3x$ at $x = 2$: $\dfrac{dy}{dx} = 2x + 3 = 7$ and $y = 10$. Tangent: $y - 10 = 7(x - 2)$, i.e. $y = 7x - 4$.
+
+A **normal** is perpendicular to the tangent, with gradient $-\dfrac{1}{m}$.
+
+## Stationary points
+
+A **stationary point** has gradient zero: $\dfrac{dy}{dx} = 0$.
+
+To find its nature, look at the gradient on either side, or use the second derivative $\dfrac{d^2y}{dx^2}$:
+
+| $\dfrac{d^2y}{dx^2}$ | Nature |
+|---|---|
+| positive | **minimum** |
+| negative | **maximum** |
+
+## Worked example
+
+Find and classify the stationary point of $y = x^2 - 6x + 5$.
+
+$$\frac{dy}{dx} = 2x - 6 = 0 \Rightarrow x = 3 \qquad y = 9 - 18 + 5 = -4$$
+
+$\dfrac{d^2y}{dx^2} = 2 > 0$, so $(3, -4)$ is a **minimum**.
+
+<Tip>
+In optimisation problems (greatest area, smallest cost) write an expression for the quantity, differentiate, set to zero, then check it is a maximum or minimum.
+</Tip>

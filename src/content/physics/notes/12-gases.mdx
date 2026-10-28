@@ -1,0 +1,73 @@
+export const meta = {
+  code: '2.1',
+  topic: 'thermal',
+  title: 'Gas pressure, temperature and volume',
+  summary: 'How gas particles create pressure, the Kelvin scale, and the relationship between pressure and volume at constant temperature.',
+  keywords: ['gas pressure', 'kelvin', 'absolute zero', 'boyle', 'pV constant', 'pressure volume', 'temperature', 'collisions', 'kinetic energy'],
+  level: 'all',
+}
+
+# Gas pressure, temperature and volume
+
+<Key>
+A gas exerts pressure on its container because its particles **collide with the walls**. Each collision gives a tiny force; billions of collisions per second give a steady pressure.
+</Key>
+
+## Explaining gas pressure
+
+- Particles move randomly and at high speed.
+- When a particle hits a wall it **bounces back**, so its momentum changes. The wall exerts a force on the particle, and by Newton's third law the particle exerts a force on the wall.
+- **Pressure** = total force from all the collisions per unit area of the wall.
+
+## Temperature and the Kelvin scale
+
+When a gas is heated the particles' **average kinetic energy increases**, so they move faster.
+
+The **Kelvin (absolute) scale** starts at **absolute zero**, the lowest possible temperature, where particles have the minimum possible energy:
+
+$$T(\text{K}) = \theta(^\circ\text{C}) + 273 \qquad 0\ \text{K} = -273\,^\circ\text{C}$$
+
+A temperature change of $1\ ^\circ\text{C}$ is the same as $1\ \text{K}$.
+
+<Mistake>
+In gas questions with temperature, using °C when the relationship needs kelvin. Always convert: $27\,^\circ\text{C} = 300\ \text{K}$. (Kelvin has no degree sign.)
+</Mistake>
+
+## Effect of changes on a gas in a rigid container
+
+| Change | What happens to the particles | Effect on pressure |
+|---|---|---|
+| **Increase temperature** (volume fixed) | move faster, hit walls **harder** and **more often** | pressure **increases** |
+| **Decrease volume** (temperature fixed) | same particles in less space, hit the walls **more often** | pressure **increases** |
+| **Increase volume** (temperature fixed) | hit the walls **less often** | pressure **decreases** |
+| **Add more gas** (same volume) | more particles, more collisions | pressure **increases** |
+
+<Tip>
+A full explanation uses **both** ideas: collisions are **more frequent** and/or **harder** (greater change of momentum). Just writing "particles collide more" is not enough for full marks.
+</Tip>
+
+## Pressure and volume at constant temperature
+
+For a fixed mass of gas at constant temperature, **pressure is inversely proportional to volume**:
+
+$$p V = \text{constant} \qquad\Longrightarrow\qquad p_1 V_1 = p_2 V_2$$
+
+- If you halve the volume, the pressure doubles.
+- Pressure and volume can be in any consistent units (both sides use the same).
+- On a graph of $p$ against $V$ you get a **curve**; a graph of $p$ against $1/V$ is a straight line through the origin.
+
+### Worked example
+
+A gas at $100\ \text{kPa}$ occupies $6.0\ \text{litres}$. It is compressed slowly to $2.0\ \text{litres}$ at constant temperature.
+
+$$p_2 = \frac{p_1 V_1}{V_2} = \frac{100 \times 6.0}{2.0} = 300\ \text{kPa}$$
+
+## Evidence and applications
+
+- A bicycle pump becomes warm and the pressure in the tyre rises as the air is compressed.
+- Gas cylinders are stored in cool places because heating raises the pressure.
+- A sealed can left in a hot car can burst because the pressure rises as the gas heats.
+
+<Ext>
+Pressure also increases with temperature at constant volume. In kelvin, $p/T$ is constant for a fixed mass of gas at constant volume. At absolute zero the pressure would be zero, because the particles would have stopped colliding with the walls.
+</Ext>

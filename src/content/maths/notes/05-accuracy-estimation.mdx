@@ -1,0 +1,70 @@
+export const meta = {
+  topic: 'number',
+  title: 'Rounding, estimation and limits of accuracy',
+  summary: 'Decimal places and significant figures, estimating, upper and lower bounds and percentage error.',
+  keywords: ['rounding', 'decimal places', 'significant figures', 'estimate', 'limits of accuracy', 'upper bound', 'lower bound', 'error interval', 'truncate'],
+  level: 'all',
+}
+
+# Rounding, estimation and limits of accuracy
+
+<Key>
+Round **only at the end** of a calculation. Keep full calculator values in between so that your final answer is accurate.
+</Key>
+
+## Decimal places and significant figures
+
+- **Decimal places (dp):** count from the decimal point. $3.4768$ to 2 dp is $3.48$.
+- **Significant figures (sf):** count from the **first non-zero digit**. $0.004\,376$ to 2 sf is $0.0044$. $52\,380$ to 3 sf is $52\,400$.
+- Look at the next digit: **5 or more rounds up**, 4 or less stays.
+
+In 0607 final answers are usually given to **3 significant figures** unless the question says otherwise. Angles in degrees are to **1 dp**.
+
+<Mistake>
+Zeros that hold a place still count when rounding: $5.0$ to 2 sf is $5.0$ (not $5$). Also, $0.0705$ has 3 sf (the zero between 7 and 5 counts).
+</Mistake>
+
+## Estimation
+
+Round every number to **1 significant figure** and then calculate.
+
+$$\frac{48.7 \times 3.2}{0.51} \approx \frac{50 \times 3}{0.5} = 300$$
+
+Use estimates to check that a calculator answer is sensible.
+
+## Limits of accuracy
+
+A measurement rounded to a given accuracy lies in a range:
+
+| Given | Lower bound | Upper bound |
+|---|---|---|
+| 12 cm to the nearest cm | 11.5 | 12.5 |
+| 4.7 to 1 dp | 4.65 | 4.75 |
+| 300 to 1 sf | 250 | 350 |
+
+Write the range as $11.5 \le x < 12.5$.
+
+### Calculations with bounds
+
+| Calculation | Largest result | Smallest result |
+|---|---|---|
+| $a + b$ | upper + upper | lower + lower |
+| $a - b$ | upper $a$ − lower $b$ | lower $a$ − upper $b$ |
+| $a \times b$ | upper × upper | lower × lower |
+| $a \div b$ | upper $a$ ÷ lower $b$ | lower $a$ ÷ upper $b$ |
+
+<Tip>
+For a division or subtraction, the "bottom" number must use the **opposite** bound to give the extreme result.
+</Tip>
+
+## Percentage error
+
+$$\text{percentage error} = \frac{\text{error}}{\text{true value}} \times 100\%$$
+
+## Worked example
+
+A rectangle has length $8.4\ \text{cm}$ and width $5.2\ \text{cm}$, both to 1 dp. Find the upper bound for the area.
+
+Upper bounds are $8.45$ and $5.25$.
+
+$$\text{upper area} = 8.45 \times 5.25 = 44.3625\ \text{cm}^2$$

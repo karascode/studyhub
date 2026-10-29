@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { subjects } from '../content/subjects'
 import { notes, noteKey, questions } from '../content'
-import { db } from '../lib/db'
-import { activeProfile } from '../lib/auth'
+import { liveDocs } from '../lib/db'
+import { currentIdentity } from '../lib/identity'
 import { subjectNoteProgress, useDueCards, useMastery, useNoteStates } from '../lib/progress'
 import { ProgressBar } from '../components/ui'
 
@@ -11,7 +11,7 @@ export default function Home() {
   const mastery = useMastery()
   const states = useNoteStates()
   const { due, total } = useDueCards()
-  const docCount = useLiveQuery(() => db.docs.count(), [], 0)
+  const docCount = useLiveQuery(() => liveDocs().count(), [], 0)
 
   const last = [...states.values()].filter((s) => s.lastOpened).sort((a, b) => b.lastOpened! - a.lastOpened!)[0]
   const lastNote = last && notes.find((n) => noteKey(n) === last.key)
@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <>
-      <h1>Welcome back{activeProfile() ? `, ${activeProfile()!.name}` : ''}</h1>
+      <h1>Welcome back{currentIdentity() ? `, ${currentIdentity()!.name}` : ''}</h1>
       <p className="muted">Offline revision for IGCSE Physics (0625) and International Mathematics (0607).</p>
 
       <div className="grid cols-3 gap-top">

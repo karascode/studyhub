@@ -63,7 +63,7 @@ export async function search(query: string): Promise<Hit[]> {
   const hits: Hit[] = staticIndex.search(q).map((r) => byId.get(r.id)!)
 
   // organizer docs change at runtime: search them on the fly
-  const mine = await db.docs.toArray()
+  const mine = (await db.docs.toArray()).filter((d) => !d.deleted)
   const ql = q.toLowerCase()
   for (const d of mine) {
     const hay = `${d.title} ${d.tags.join(' ')} ${d.text ?? ''} ${d.fileName ?? ''}`.toLowerCase()

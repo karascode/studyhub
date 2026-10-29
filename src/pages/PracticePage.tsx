@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { questions as allQuestions } from '../content'
 import { subjects } from '../content/subjects'
-import { db, logActivity } from '../lib/db'
+import { db, logActivity, newUid } from '../lib/db'
 import { latestByQuestion, useAttempts } from '../lib/progress'
 import { Md } from '../components/ui'
 import type { Question } from '../types'
@@ -245,7 +245,7 @@ function Session({ qs, minutes, onFinish, onQuit }: { qs: Question[]; minutes: n
 
   const q = qs[i]
   const record = async (score: number) => {
-    await db.attempts.add({ qid: q.id, subject: q.subject, topic: q.topic, score, max: q.marks, ts: Date.now() })
+    await db.attempts.add({ uid: newUid(), qid: q.id, subject: q.subject, topic: q.topic, score, max: q.marks, ts: Date.now() })
     await logActivity()
     setResults((r) => [...r, { q, score }])
   }

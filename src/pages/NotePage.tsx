@@ -16,7 +16,7 @@ export default function NotePage() {
   useEffect(() => {
     if (!note) return
     db.noteState.get(key).then((cur) => {
-      db.noteState.put({ ...(cur ?? { key, subject }), key, subject, lastOpened: Date.now() })
+      db.noteState.put({ ...(cur ?? { key, subject }), key, subject, lastOpened: Date.now(), updated: Date.now() })
     })
     logActivity()
     document.title = `${note.meta.title} · StudyHub`
@@ -29,7 +29,7 @@ export default function NotePage() {
 
   const patch = async (p: Partial<NoteState>) => {
     const cur = (await db.noteState.get(key)) ?? { key, subject }
-    await db.noteState.put({ ...cur, ...p })
+    await db.noteState.put({ ...cur, ...p, updated: Date.now() })
   }
   const all = notesFor(subject)
   const i = all.findIndex((n) => noteKey(n) === key)

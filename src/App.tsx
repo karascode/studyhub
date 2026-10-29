@@ -9,7 +9,9 @@ import OrganizerPage from './pages/OrganizerPage'
 import SearchPage from './pages/SearchPage'
 import SettingsPage from './pages/SettingsPage'
 import AuthPage from './pages/AuthPage'
-import { activeProfile } from './lib/auth'
+import { currentIdentity, cloudConfigured } from './lib/identity'
+import { authFlow, getClient, realRemote } from './lib/cloud'
+import { startSync, stopSync, useSyncState } from './lib/sync'
 import { useStreak } from './lib/progress'
 import { MoonIcon, SettingsIcon, SunIcon } from './components/ui'
 
@@ -52,6 +54,11 @@ export default function App() {
   const navigate = useNavigate()
   const loc = useLocation()
   const streak = useStreak()
+  const sync = useSyncState()
+  // evaluated once per page load: who is signed in, and whether we arrived from a password-reset email
+  const [identity] = useState(currentIdentity)
+  const hadIdentity = !!identity
+  const [recovering] = useState(() => cloudConfigured && /type=recovery/.test(window.location.hash))
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -79,7 +86,37 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  if (!activeProfile()) return <AuthPage dark={dark} setDark={setDark} />
+  // cloud accounts: react to the session changing in another tab, an email link, or an expired session
+  useEffect(() => {
+    if (!cloudConfigured) return
+    let unsub: (() => void) | undefined
+    let cancelled = false
+    getClient().then((c) => {
+      if (cancelled) return
+      const { data } = c.auth.onAuthStateChange((event) => {
+        const reload = () => {
+          window.location.hash = '#/'
+          window.location.reload()
+        }
+        if (event === 'SIGNED_OUT' && hadIdentity) reload()
+        if (event === 'SIGNED_IN' && !hadIdentity && !authFlow.busy && !recovering) reload()
+      })
+      unsub = () => data.subscription.unsubscribe()
+    })
+    return () => {
+      cancelled = true
+      unsub?.()
+    }
+  }, [])
+
+  // keep this device and the cloud in step for as long as someone is signed in
+  useEffect(() => {
+    if (identity?.cloud) startSync(realRemote)
+    return () => stopSync()
+  }, [identity?.id])
+
+  if (recovering) return <AuthPage dark={dark} setDark={setDark} recover />
+  if (!identity) return <AuthPage dark={dark} setDark={setDark} />
 
   return (
     <>
@@ -104,6 +141,11 @@ export default function App() {
         >
           <input id="global-search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search  ( / )" aria-label="Search" />
         </form>
+        {identity?.cloud && sync.status !== 'idle' && (
+          <span className={`chip sync ${sync.status}`} title={sync.error ?? (sync.status === 'syncing' ? 'Saving your progress to your account' : 'Changes will sync when you’re back online')}>
+            {sync.status === 'syncing' ? 'Syncing…' : sync.status === 'offline' ? 'Offline' : 'Sync paused'}
+          </span>
+        )}
         <span className="chip" title="Days in a row you've studied">{streak} day streak</span>
         <button className="icon-btn theme-btn" onClick={() => setDark(!dark)} aria-label="Toggle dark mode" title="Toggle dark mode">
           {dark ? <SunIcon /> : <MoonIcon />}

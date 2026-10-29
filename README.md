@@ -27,6 +27,11 @@ The site is fully static (hash routing), so any static host works.
 `public/_headers` keeps the service worker fresh so updates reach people on their next visit.
 Each visitor's profile, progress and notes stay in their own browser; nothing is stored on the host.
 
+## Accounts and sync (optional)
+
+Without configuration, accounts are device-only profiles. To get real accounts and progress that syncs
+across devices, follow [docs/BACKEND.md](docs/BACKEND.md) (free Supabase project, about 10 minutes).
+
 ## Add content
 
 - Notes: `src/content/<subject>/notes/NN-slug.mdx`, starting with `export const meta = {...}`.

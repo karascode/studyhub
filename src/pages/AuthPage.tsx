@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createProfile, listProfiles, startSession, verifyProfile } from '../lib/auth'
+import { authFlow, getClient } from '../lib/cloud'
+import { cloudConfigured } from '../lib/identity'
 import { MoonIcon, SunIcon } from '../components/ui'
 
-type Mode = 'in' | 'up'
+type Mode = 'in' | 'up' | 'recover'
 type Phase = 'idle' | 'busy' | 'done'
 
 const FORMULAS = [
@@ -34,22 +36,40 @@ const Check = () => (
   </svg>
 )
 
-export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v: boolean) => void }) {
-  const profiles = useMemo(listProfiles, [])
-  const [mode, setMode] = useState<Mode>(profiles.length ? 'in' : 'up')
+/** Turn Supabase's messages into something kind and specific. */
+function friendly(msg: string): string {
+  const m = msg.toLowerCase()
+  if (m.includes('invalid login')) return 'That email and password don’t match'
+  if (m.includes('already registered') || m.includes('already been registered')) return 'That email already has an account. Try signing in.'
+  if (m.includes('email not confirmed')) return 'Confirm your email first. We sent you a link.'
+  if (m.includes('rate limit') || m.includes('too many')) return 'Too many attempts. Wait a minute and try again.'
+  if (m.includes('failed to fetch') || m.includes('network')) return 'Can’t reach the server. Check your connection.'
+  if (m.includes('password should be')) return 'Use at least 6 characters for your password'
+  return msg
+}
+
+const validEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
+
+export default function AuthPage({ dark, setDark, recover = false }: { dark: boolean; setDark: (v: boolean) => void; recover?: boolean }) {
+  const cloud = cloudConfigured
+  const profiles = useMemo(() => (cloud ? [] : listProfiles()), [cloud])
+  const [mode, setMode] = useState<Mode>(recover ? 'recover' : profiles.length || cloud ? 'in' : 'up')
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
   const [pw, setPw] = useState('')
   const [show, setShow] = useState(false)
   const [remember, setRemember] = useState(true)
   const [errorText, setErrorText] = useState('')
   const [errorOpen, setErrorOpen] = useState(false)
+  const [notice, setNotice] = useState('')
   const [phase, setPhase] = useState<Phase>('idle')
   const panel = useRef<HTMLDivElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
   const pwRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    nameRef.current?.focus()
+    ;(mode === 'recover' ? pwRef : cloud && mode === 'in' ? emailRef : nameRef).current?.focus()
   }, [])
 
   const shake = () => {
@@ -60,6 +80,8 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
     )
   }
   const fail = (msg: string, focus?: HTMLInputElement | null) => {
+    authFlow.busy = false
+    setNotice('')
     setErrorText(msg)
     setErrorOpen(true)
     setPhase('idle')
@@ -70,33 +92,99 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
   const switchMode = (m: Mode) => {
     setMode(m)
     setErrorOpen(false)
+    setNotice('')
     setPw('')
     setShow(false)
+  }
+
+  const finish = () => {
+    setPhase('done')
+    // let the check and the exit finish, then load this account's data
+    setTimeout(() => {
+      window.location.hash = '#/'
+      window.location.reload()
+    }, 520)
   }
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (phase !== 'idle') return
     const n = name.trim()
-    if (!n) return fail('Enter your name to continue', nameRef.current)
-    if (!pw) return fail('Enter your password', pwRef.current)
-    if (mode === 'up' && pw.length < 6) return fail('Use at least 6 characters for your password', pwRef.current)
+    const em = email.trim()
+    setNotice('')
+
+    if (mode === 'recover') {
+      if (pw.length < 6) return fail('Use at least 6 characters for your password', pwRef.current)
+    } else if (cloud) {
+      if (mode === 'up' && !n) return fail('Enter your name to continue', nameRef.current)
+      if (!validEmail(em)) return fail('Enter a valid email address', emailRef.current)
+      if (!pw) return fail('Enter your password', pwRef.current)
+      if (mode === 'up' && pw.length < 6) return fail('Use at least 6 characters for your password', pwRef.current)
+    } else {
+      if (!n) return fail('Enter your name to continue', nameRef.current)
+      if (!pw) return fail('Enter your password', pwRef.current)
+      if (mode === 'up' && pw.length < 6) return fail('Use at least 6 characters for your password', pwRef.current)
+    }
+
     setErrorOpen(false)
     setPhase('busy')
+    authFlow.busy = true
     try {
+      if (cloud) {
+        const c = await getClient()
+        if (mode === 'recover') {
+          const { error } = await c.auth.updateUser({ password: pw })
+          if (error) throw error
+        } else if (mode === 'up') {
+          const { data, error } = await c.auth.signUp({ email: em, password: pw, options: { data: { display_name: n } } })
+          if (error) throw error
+          if (!data.session) {
+            // email confirmation is switched on for this project
+            authFlow.busy = false
+            setPhase('idle')
+            setMode('in')
+            setPw('')
+            setNotice('Check your email and confirm your address, then sign in.')
+            return
+          }
+        } else {
+          const { error } = await c.auth.signInWithPassword({ email: em, password: pw })
+          if (error) throw error
+        }
+        authFlow.busy = true
+        return finish()
+      }
       const profile = mode === 'up' ? await createProfile(n, pw) : await verifyProfile(n, pw)
       if (!profile) return fail('That name and password don’t match', pwRef.current)
       startSession(profile.id, remember)
-      setPhase('done')
-      // let the check and the exit finish, then load this profile's data
-      setTimeout(() => {
-        window.location.hash = '#/'
-        window.location.reload()
-      }, 520)
+      finish()
     } catch (err) {
-      fail((err as Error).message, nameRef.current)
+      fail(friendly((err as Error).message), mode === 'up' && !cloud ? nameRef.current : pwRef.current)
     }
   }
+
+  const forgot = async () => {
+    const em = email.trim()
+    if (!validEmail(em)) return fail('Enter your email above first, then tap “Forgot password?”', emailRef.current)
+    try {
+      const c = await getClient()
+      const { error } = await c.auth.resetPasswordForEmail(em, { redirectTo: `${location.origin}${location.pathname}` })
+      if (error) throw error
+      setErrorOpen(false)
+      setNotice('If that email has an account, a reset link is on its way.')
+    } catch (err) {
+      fail(friendly((err as Error).message), emailRef.current)
+    }
+  }
+
+  const heading = { in: 'Welcome back', up: 'Create your profile', recover: 'Choose a new password' }[mode]
+  const sub = {
+    in: 'Sign in to pick up where you left off.',
+    up: cloud ? 'Your progress then follows you to any device.' : 'It takes ten seconds and stays on this device.',
+    recover: 'Pick something you’ll remember. You’ll be signed in right after.',
+  }[mode]
+  const submitLabel = { in: 'Sign in', up: 'Create account', recover: 'Save password' }[mode]
+  const busyLabel = { in: 'Signing in…', up: 'Creating…', recover: 'Saving…' }[mode]
 
   return (
     <div className="auth">
@@ -116,7 +204,7 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
           <ul>
             <li>In-depth notes, quizzes and flashcards for IGCSE Physics and Maths</li>
             <li>Spaced repetition that brings back what you forget</li>
-            <li>Your progress and notes stay on this device</li>
+            <li>{cloud ? 'Your progress syncs across all your devices' : 'Your progress and notes stay on this device'}</li>
           </ul>
         </div>
         <div className="hero-foot">
@@ -138,18 +226,22 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
 
             <div>
               <div className="auth-head fade-in" key={mode}>
-                <h1>{mode === 'in' ? 'Welcome back' : 'Create your profile'}</h1>
-                <p className="muted">{mode === 'in' ? 'Sign in to pick up where you left off.' : 'It takes ten seconds and stays on this device.'}</p>
+                <h1>{heading}</h1>
+                <p className="muted">{sub}</p>
               </div>
             </div>
 
-            <div className="seg" data-mode={mode} role="tablist" aria-label="Sign in or create account">
-              <span className="seg-ind" aria-hidden />
-              <button type="button" role="tab" aria-selected={mode === 'in'} onClick={() => switchMode('in')}>Sign in</button>
-              <button type="button" role="tab" aria-selected={mode === 'up'} onClick={() => switchMode('up')}>Create account</button>
-            </div>
+            {mode !== 'recover' ? (
+              <div className="seg" data-mode={mode} role="tablist" aria-label="Sign in or create account">
+                <span className="seg-ind" aria-hidden />
+                <button type="button" role="tab" aria-selected={mode === 'in'} onClick={() => switchMode('in')}>Sign in</button>
+                <button type="button" role="tab" aria-selected={mode === 'up'} onClick={() => switchMode('up')}>Create account</button>
+              </div>
+            ) : (
+              <span />
+            )}
 
-            <div className="collapse" data-open={mode === 'in' && profiles.length > 0} inert={!(mode === 'in' && profiles.length > 0)}>
+            <div className="collapse" data-open={!cloud && mode === 'in' && profiles.length > 0} inert={!(!cloud && mode === 'in' && profiles.length > 0)}>
               <div className="collapse-inner">
                 <div className="auth-label">On this device</div>
                 <div className="pchips">
@@ -173,23 +265,54 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
             </div>
 
             <form className="auth-form" onSubmit={submit} noValidate>
+              {/* name: identifies a device profile, or personalises a new cloud account */}
+              {mode !== 'recover' && (
+                <div className={cloud ? 'collapse in-form' : ''} data-open={cloud ? mode === 'up' : undefined} inert={cloud ? mode !== 'up' : undefined}>
+                  <div className={cloud ? 'collapse-inner' : ''}>
+                    <label className="field">
+                      <span>Name</span>
+                      <input
+                        ref={nameRef}
+                        value={name}
+                        onChange={(e) => {
+                          setName(e.target.value)
+                          setErrorOpen(false)
+                        }}
+                        autoComplete={cloud ? 'name' : 'username'}
+                        autoCapitalize="words"
+                        spellCheck={false}
+                        placeholder={mode === 'up' ? 'What should we call you?' : 'Your name'}
+                      />
+                    </label>
+                  </div>
+                </div>
+              )}
+              {cloud && mode !== 'recover' && (
+                <label className="field">
+                  <span>Email</span>
+                  <input
+                    ref={emailRef}
+                    type="email"
+                    inputMode="email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value)
+                      setErrorOpen(false)
+                    }}
+                    autoComplete="email"
+                    autoCapitalize="off"
+                    spellCheck={false}
+                    placeholder="you@example.com"
+                  />
+                </label>
+              )}
               <label className="field">
-                <span>Name</span>
-                <input
-                  ref={nameRef}
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value)
-                    setErrorOpen(false)
-                  }}
-                  autoComplete="username"
-                  autoCapitalize="words"
-                  spellCheck={false}
-                  placeholder={mode === 'up' ? 'What should we call you?' : 'Your name'}
-                />
-              </label>
-              <label className="field">
-                <span>Password</span>
+                <span className="row between">
+                  {mode === 'recover' ? 'New password' : 'Password'}
+                  {cloud && mode === 'in' && (
+                    <button type="button" className="linkish" onClick={forgot}>Forgot password?</button>
+                  )}
+                </span>
                 <div className="pw">
                   <input
                     ref={pwRef}
@@ -199,8 +322,8 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
                       setPw(e.target.value)
                       setErrorOpen(false)
                     }}
-                    autoComplete={mode === 'up' ? 'new-password' : 'current-password'}
-                    placeholder={mode === 'up' ? 'At least 6 characters' : 'Your password'}
+                    autoComplete={mode === 'in' ? 'current-password' : 'new-password'}
+                    placeholder={mode === 'in' ? 'Your password' : 'At least 6 characters'}
                   />
                   <button type="button" className="icon-btn pw-toggle" onClick={() => setShow(!show)} aria-label={show ? 'Hide password' : 'Show password'} aria-pressed={show}>
                     <Eye off={show} />
@@ -208,34 +331,36 @@ export default function AuthPage({ dark, setDark }: { dark: boolean; setDark: (v
                 </div>
               </label>
 
-              <div className="collapse" data-open={errorOpen}>
+              <div className="collapse" data-open={errorOpen || !!notice}>
                 <div className="collapse-inner">
-                  <p className="auth-error" role="alert">{errorText}</p>
+                  <p className={notice && !errorOpen ? 'auth-notice' : 'auth-error'} role={errorOpen ? 'alert' : 'status'}>{errorOpen ? errorText : notice}</p>
                 </div>
               </div>
 
-              <label className="check remember">
-                <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-                Keep me signed in on this device
-              </label>
+              {!cloud && (
+                <label className="check remember">
+                  <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+                  Keep me signed in on this device
+                </label>
+              )}
 
               <button className={`btn auth-submit ${phase !== 'idle' ? 'busy' : ''} ${phase === 'done' ? 'ok' : ''}`} type="submit" disabled={phase !== 'idle'}>
                 <span className="submit-content" key={`${phase}-${mode}`}>
                   {phase === 'busy' ? (
-                    <><Spinner /> {mode === 'up' ? 'Creating…' : 'Signing in…'}</>
+                    <><Spinner /> {busyLabel}</>
                   ) : phase === 'done' ? (
                     <><Check /> You’re in</>
-                  ) : mode === 'up' ? (
-                    'Create account'
                   ) : (
-                    'Sign in'
+                    submitLabel
                   )}
                 </span>
               </button>
             </form>
 
             <p className="auth-note small muted">
-              Profiles live only in this browser. Your password is hashed here and never sent anywhere.
+              {cloud
+                ? 'Your study data is private to your account and also kept on this device so the app works offline.'
+                : 'Profiles live only in this browser. Your password is hashed here and never sent anywhere.'}
             </p>
             <p className="auth-note small muted legal">
               Independent study resource. Not affiliated with or endorsed by Cambridge University Press &amp; Assessment. IGCSE is a trademark of its owner.

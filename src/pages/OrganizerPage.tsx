@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, logActivity, type OrgDoc } from '../lib/db'
+import { db, logActivity, newUid, type OrgDoc } from '../lib/db'
 import { subjects } from '../content/subjects'
 import { Empty, Md } from '../components/ui'
 
@@ -18,7 +18,7 @@ export default function OrganizerPage() {
   const fileInput = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
 
-  const docs = useLiveQuery(() => db.docs.orderBy('updated').reverse().toArray(), [], []) ?? []
+  const docs = useLiveQuery(async () => (await db.docs.orderBy('updated').reverse().toArray()).filter((d) => !d.deleted), [], []) ?? []
   const openId = Number(params.get('doc')) || null
   const open = docs.find((d) => d.id === openId) ?? null
 
@@ -49,6 +49,7 @@ export default function OrganizerPage() {
       }
       const now = Date.now()
       const base: Omit<OrgDoc, 'id'> = {
+        uid: newUid(),
         subject: subject || subjects[0].id,
         topic: '',
         title: f.name.replace(/\.[^.]+$/, ''),
@@ -171,7 +172,7 @@ function Viewer({ doc, onEdit, onDeleted }: { doc: OrgDoc; onEdit: () => void; o
           <button className="btn ghost small-btn" onClick={onEdit}>{doc.kind === 'text' ? 'Edit' : 'Details'}</button>
           {url && <a className="btn ghost small-btn" href={url} download={doc.fileName}>Download</a>}
           {confirm ? (
-            <button className="btn danger small-btn" onClick={async () => { await db.docs.delete(doc.id!); onDeleted() }}>Confirm delete</button>
+            <button className="btn danger small-btn" onClick={async () => { await db.docs.update(doc.id!, { deleted: true, updated: Date.now(), text: '', file: undefined }); onDeleted() }}>Confirm delete</button>
           ) : (
             <button className="btn ghost small-btn" onClick={() => setConfirm(true)}>Delete</button>
           )}
@@ -215,7 +216,7 @@ function Editor({ doc, defaultSubject, onClose }: { doc: OrgDoc | null; defaultS
       await db.docs.update(doc.id, isFile ? data : { ...data, text })
       onClose(doc.id)
     } else {
-      const id = await db.docs.add({ ...data, kind: 'text', text, created: now })
+      const id = await db.docs.add({ ...data, uid: newUid(), kind: 'text', text, created: now })
       await logActivity()
       onClose(id)
     }

@@ -2,20 +2,33 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createProfile, listProfiles, startSession, verifyProfile } from '../lib/auth'
 import { authFlow, getClient } from '../lib/cloud'
 import { cloudConfigured } from '../lib/identity'
-import { MoonIcon, SunIcon } from '../components/ui'
+import { flashcards, notes, questions } from '../content'
+import { Md, MoonIcon, SunIcon } from '../components/ui'
 
 type Mode = 'in' | 'up' | 'recover'
 type Phase = 'idle' | 'busy' | 'done'
 
-const FORMULAS = [
-  { t: 'F = ma', x: '9%', y: '12%', d: '0s' },
-  { t: 'E = ½mv²', x: '58%', y: '9%', d: '-3s' },
-  { t: 'sin θ = opp / hyp', x: '12%', y: '23%', d: '-5s' },
-  { t: 'p = mv', x: '68%', y: '24%', d: '-2s' },
-  { t: 'Q = mcΔθ', x: '8%', y: '74%', d: '-6s' },
-  { t: 'x = (−b ± √(b² − 4ac)) / 2a', x: '26%', y: '86%', d: '-4s' },
-  { t: 'ρ = m / V', x: '72%', y: '74%', d: '-1s' },
-]
+const greeting = () => {
+  const h = new Date().getHours()
+  return h < 5 ? 'Up late?' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'
+}
+
+/** A real flashcard from the library, shown as a preview (not the student's data). */
+const previewCard = flashcards.find((f) => f.subject === 'physics' && /density/i.test(f.front)) ?? flashcards[0]
+
+const Icon = ({ d }: { d: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d={d} />
+  </svg>
+)
+const ICONS = {
+  book: 'M4 5.5A2.5 2.5 0 016.5 3H20v16H6.5A2.5 2.5 0 004 21.5v-16zM20 17H6.5A2.5 2.5 0 004 19.5',
+  cards: 'M7 7h12a2 2 0 012 2v9a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2zM9 4h10M12 11v6M9 14h6',
+  sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z',
+  offline: 'M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M12 19.5h.01M3 3l18 18',
+  lock: 'M7 11V8a5 5 0 0110 0v3M6 11h12v9H6z',
+}
+const AI_ON = import.meta.env.VITE_AI_ENABLED === 'true'
 
 const Eye = ({ off }: { off?: boolean }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -53,6 +66,7 @@ const validEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
 export default function AuthPage({ dark, setDark, recover = false }: { dark: boolean; setDark: (v: boolean) => void; recover?: boolean }) {
   const cloud = cloudConfigured
   const profiles = useMemo(() => (cloud ? [] : listProfiles()), [cloud])
+  const hello = useMemo(greeting, [])
   const [mode, setMode] = useState<Mode>(recover ? 'recover' : profiles.length || cloud ? 'in' : 'up')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -177,10 +191,11 @@ export default function AuthPage({ dark, setDark, recover = false }: { dark: boo
     }
   }
 
-  const heading = { in: 'Welcome back', up: 'Create your profile', recover: 'Choose a new password' }[mode]
+  const eyebrow = { in: hello, up: 'Free to use', recover: 'Almost there' }[mode]
+  const heading = { in: 'Welcome back', up: cloud ? 'Create your account' : 'Create your profile', recover: 'Choose a new password' }[mode]
   const sub = {
     in: 'Sign in to pick up where you left off.',
-    up: cloud ? 'Your progress then follows you to any device.' : 'It takes ten seconds and stays on this device.',
+    up: cloud ? 'Save your progress and study on any device.' : 'It takes ten seconds and stays on this device.',
     recover: 'Pick something you’ll remember. You’ll be signed in right after.',
   }[mode]
   const submitLabel = { in: 'Sign in', up: 'Create account', recover: 'Save password' }[mode]
@@ -189,27 +204,48 @@ export default function AuthPage({ dark, setDark, recover = false }: { dark: boo
   return (
     <div className="auth">
       <aside className="auth-hero">
-        <div className="hero-art" aria-hidden>
-          {FORMULAS.map((f) => (
-            <span key={f.t} className="formula" style={{ left: f.x, top: f.y, animationDelay: f.d }}>
-              {f.t}
-            </span>
-          ))}
-        </div>
         <div className="hero-brand">
           <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" width="28" height="28" /> StudyHub
         </div>
-        <div className="hero-copy">
-          <h2>Revise smarter.<br />Even offline.</h2>
-          <ul>
-            <li>In-depth notes, quizzes and flashcards for IGCSE Physics and Maths</li>
-            <li>Spaced repetition that brings back what you forget</li>
-            <li>{cloud ? 'Your progress syncs across all your devices' : 'Your progress and notes stay on this device'}</li>
+
+        <div className="hero-body">
+          <span className="hero-pill">IGCSE Physics 0625 · Mathematics 0607</span>
+          <h2>Revise with confidence.</h2>
+          <p className="hero-lede">In-depth notes, quizzes and flashcards, built around how you actually learn.</p>
+
+          <ul className="hero-points">
+            <li>
+              <Icon d={ICONS.book} />
+              <span><strong>Clear, in-depth notes</strong> Written to the syllabus outline, with worked examples and exam tips.</span>
+            </li>
+            <li>
+              <Icon d={ICONS.cards} />
+              <span><strong>Flashcards that stick</strong> Spaced repetition brings each card back just before you forget it.</span>
+            </li>
+            <li>
+              <Icon d={AI_ON ? ICONS.sparkle : ICONS.offline} />
+              <span>
+                <strong>{AI_ON ? 'A tutor in your pocket' : 'Revise anywhere'}</strong>{' '}
+                {AI_ON ? 'Ask questions and get answers drawn from your own notes.' : 'It works offline once loaded, so a bad signal never stops you.'}
+              </span>
+            </li>
           </ul>
+
+          <div className="peek" aria-hidden>
+            <div className="peek-card back b2" />
+            <div className="peek-card back b1" />
+            <div className="peek-card front">
+              <div className="peek-eyebrow">Flashcard · Physics</div>
+              <Md>{previewCard.front}</Md>
+              <div className="peek-answer"><Md>{previewCard.back}</Md></div>
+            </div>
+          </div>
         </div>
+
         <div className="hero-foot">
-          <span><i style={{ background: '#2563eb' }} />Physics 0625</span>
-          <span><i style={{ background: '#0f766e' }} />Mathematics 0607</span>
+          <span><b>{notes.length}</b> notes</span>
+          <span><b>{questions.length}</b> practice questions</span>
+          <span><b>{flashcards.length}</b> flashcards</span>
         </div>
       </aside>
 
@@ -226,6 +262,7 @@ export default function AuthPage({ dark, setDark, recover = false }: { dark: boo
 
             <div>
               <div className="auth-head fade-in" key={mode}>
+                <div className="auth-eyebrow">{eyebrow}</div>
                 <h1>{heading}</h1>
                 <p className="muted">{sub}</p>
               </div>
@@ -331,7 +368,7 @@ export default function AuthPage({ dark, setDark, recover = false }: { dark: boo
                 </div>
               </label>
 
-              <div className="collapse" data-open={errorOpen || !!notice}>
+              <div className="collapse in-form" data-open={errorOpen || !!notice}>
                 <div className="collapse-inner">
                   <p className={notice && !errorOpen ? 'auth-notice' : 'auth-error'} role={errorOpen ? 'alert' : 'status'}>{errorOpen ? errorText : notice}</p>
                 </div>
@@ -357,16 +394,15 @@ export default function AuthPage({ dark, setDark, recover = false }: { dark: boo
               </button>
             </form>
 
-            <p className="auth-note small muted">
-              {cloud
-                ? 'Your study data is private to your account and also kept on this device so the app works offline.'
-                : 'Profiles live only in this browser. Your password is hashed here and never sent anywhere.'}
-            </p>
-            <p className="auth-note small muted legal">
-              Independent study resource. Not affiliated with or endorsed by Cambridge University Press &amp; Assessment. IGCSE is a trademark of its owner.
+            <p className="auth-trust">
+              <Icon d={ICONS.lock} />
+              {cloud ? 'Your progress is private to you and syncs across your devices.' : 'Stays on this device. Your password is never sent anywhere.'}
             </p>
           </div>
         </div>
+        <p className="auth-legal">
+          Independent study resource, not affiliated with or endorsed by Cambridge University Press &amp; Assessment. IGCSE is a trademark of its owner.
+        </p>
       </main>
     </div>
   )

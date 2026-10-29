@@ -1,15 +1,19 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { insights } from '../lib/lessons'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { subjects } from '../content/subjects'
 import { notes, noteKey, questions } from '../content'
 import { liveDocs } from '../lib/db'
 import { currentIdentity } from '../lib/identity'
-import { subjectNoteProgress, useDueCards, useMastery, useNoteStates } from '../lib/progress'
+import { subjectNoteProgress, useAttempts, useDueCards, useMastery, useNoteStates } from '../lib/progress'
 import { ProgressBar } from '../components/ui'
 
 export default function Home() {
   const mastery = useMastery()
   const states = useNoteStates()
+  const attempts = useAttempts()
+  const lessonPick = useMemo(() => insights(attempts, states)[0], [attempts, states])
   const { due, total } = useDueCards()
   const docCount = useLiveQuery(() => liveDocs().count(), [], 0)
 
@@ -42,6 +46,13 @@ export default function Home() {
             </>
           )}
         </div>
+        {lessonPick && (
+          <div className="card">
+            <h3>Today’s lesson</h3>
+            <p>{lessonPick.note.meta.title}</p>
+            <Link className="btn" to={`/lessons?n=${lessonPick.note.subject}/${lessonPick.note.slug}`}>Start lesson</Link>
+          </div>
+        )}
         <div className="card">
           <h3>Flashcards due</h3>
           <p className="big">{due.length}<span className="muted small"> / {total}</span></p>

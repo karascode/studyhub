@@ -68,6 +68,13 @@ export default function NotePage() {
         <note.Content components={mdxComponents} />
       </div>
 
+      <div className="card cta">
+        <strong>Want it explained step by step?</strong>
+        <div className="row gap wrap" style={{ marginTop: 10 }}>
+          <Link className="btn small-btn" to={`/lessons?n=${subject}/${slug}`}>Smart lesson on this topic</Link>
+        </div>
+      </div>
+
       {qn > 0 && (
         <div className="card cta">
           <strong>Test yourself</strong> — {qn} question{qn > 1 ? 's' : ''} on this note.

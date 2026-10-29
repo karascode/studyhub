@@ -5,6 +5,7 @@ import { subjects } from '../content/subjects'
 import { db, logActivity, newUid } from '../lib/db'
 import { latestByQuestion, useAttempts } from '../lib/progress'
 import { Md } from '../components/ui'
+import { aiAvailable, AIError, askAI, fixMath, type MarkResult, type TextResult } from '../lib/ai'
 import type { Question } from '../types'
 
 type Mode = 'all' | 'new' | 'mistakes'
@@ -280,6 +281,12 @@ function QuestionView({ q, onDone, onNext, last }: { q: Question; onDone: (score
   const [checked, setChecked] = useState<boolean[]>([])
   const [revealed, setRevealed] = useState(false)
   const [score, setScore] = useState<number | null>(null)
+  // AI help (needs a cloud account)
+  const ai = aiAvailable()
+  const [aiMark, setAiMark] = useState<MarkResult | null>(null)
+  const [aiBusy, setAiBusy] = useState(false)
+  const [aiErr, setAiErr] = useState('')
+  const [explain, setExplain] = useState<string | null>(null)
 
   const submit = async (s: number) => {
     setScore(s)
@@ -287,6 +294,34 @@ function QuestionView({ q, onDone, onNext, last }: { q: Question; onDone: (score
     await onDone(s)
   }
   const finished = score !== null
+
+  const run = async <T,>(job: () => Promise<T>, done: (r: T) => void) => {
+    setAiBusy(true)
+    setAiErr('')
+    try {
+      done(await job())
+    } catch (e) {
+      setAiErr(e instanceof AIError ? e.message : 'Something went wrong. Try again.')
+    } finally {
+      setAiBusy(false)
+    }
+  }
+  const getFeedback = () =>
+    run(
+      () => askAI<MarkResult>('mark', { question: q.prompt, scheme: q.markScheme, answer: text }),
+      (r) => {
+        setAiMark(r)
+        setChecked(r.points.map((p) => p.met)) // the AI ticks the boxes; the student checks and saves
+      },
+    )
+  const correctText =
+    q.type === 'mcq' ? `${'ABCD'[q.answerIndex!]}. ${q.options![q.answerIndex!]}` : q.type === 'numeric' ? `${q.numeric!.answer} ${q.numeric!.unit ?? ''}` : q.markScheme!.map((m, i) => `${i + 1}. ${m}`).join('\n')
+  const studentText = q.type === 'mcq' ? (choice != null ? q.options![choice] : '') : text
+  const getExplanation = () =>
+    run(
+      () => askAI<TextResult>('explain', { question: q.prompt, correct: correctText, student: studentText, working: q.explanation }),
+      (r) => setExplain(r.text),
+    )
   const diff = ['', 'Easy', 'Medium', 'Hard'][q.difficulty]
 
   return (
@@ -329,7 +364,7 @@ function QuestionView({ q, onDone, onNext, last }: { q: Question; onDone: (score
         <textarea
           className="ans"
           rows={4}
-          placeholder="Write your answer here (optional — you mark it yourself)…"
+          placeholder={ai ? 'Write your answer here. The AI can mark it for you…' : 'Write your answer here (optional — you mark it yourself)…'}
           value={text}
           disabled={finished}
           onChange={(e) => setText(e.target.value)}
@@ -352,9 +387,25 @@ function QuestionView({ q, onDone, onNext, last }: { q: Question; onDone: (score
           {q.markScheme!.map((m, k) => (
             <label key={k} className="check">
               <input type="checkbox" checked={checked[k] ?? false} onChange={(e) => setChecked(checked.map((c, j) => (j === k ? e.target.checked : c)))} />
-              <Md>{m}</Md>
+              <div>
+                <Md>{m}</Md>
+                {aiMark?.points[k]?.comment && <span className="point-comment">AI: {aiMark.points[k].comment}</span>}
+              </div>
             </label>
           ))}
+          {ai && text.trim().length > 8 && (
+            <div className="ai-actions">
+              <button className="btn ghost small-btn" disabled={aiBusy} onClick={getFeedback}>{aiBusy ? 'Marking…' : aiMark ? 'Mark again' : 'Get AI feedback'}</button>
+              <span className="small muted">The AI ticks the boxes. You check them, then save.</span>
+            </div>
+          )}
+          {aiErr && <p className="small" style={{ color: 'var(--bad)', margin: 0 }}>{aiErr}</p>}
+          {aiMark && (
+            <div className="ai-box">
+              <div className="ai-label">AI feedback</div>
+              <Md>{fixMath(aiMark.feedback)}</Md>
+            </div>
+          )}
           <button className="btn" onClick={() => submit(Math.min(q.marks, checked.filter(Boolean).length))}>Save marks</button>
         </div>
       )}
@@ -368,6 +419,23 @@ function QuestionView({ q, onDone, onNext, last }: { q: Question; onDone: (score
           )}
           {q.explanation && <Md>{q.explanation}</Md>}
         </div>
+      )}
+
+      {finished && ai && score! < q.marks && (
+        <>
+          {!explain && (
+            <div className="ai-actions">
+              <button className="btn ghost small-btn" disabled={aiBusy} onClick={getExplanation}>{aiBusy ? 'Thinking…' : 'Explain why'}</button>
+              {aiErr && <span className="small" style={{ color: 'var(--bad)' }}>{aiErr}</span>}
+            </div>
+          )}
+          {explain && (
+            <div className="ai-box">
+              <div className="ai-label">AI explanation</div>
+              <Md>{fixMath(explain)}</Md>
+            </div>
+          )}
+        </>
       )}
 
       {finished && (

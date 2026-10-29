@@ -1,0 +1,5 @@
+# Used by `supabase functions deploy ai` (the dashboard has an equivalent "Verify JWT" switch).
+# The function verifies the signed-in user itself (auth.getUser), which also works with the newer
+# publishable-key / asymmetric-JWT projects where platform-level JWT verification can reject valid tokens.
+[functions.ai]
+verify_jwt = false

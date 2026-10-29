@@ -57,6 +57,17 @@ const staticIndex = new MiniSearch<(typeof docs)[number]>(opts)
 staticIndex.addAll(docs)
 const byId = new Map(docs.map((d) => [d.id, d]))
 
+/** Notes most relevant to a question (used to ground the AI helper in the student's own notes). */
+export function relatedNotes(query: string, limit = 3) {
+  const hits = staticIndex.search(query).filter((r) => String(r.id).startsWith('note:'))
+  const best = hits[0]?.score ?? 0
+  return hits
+    .filter((r) => r.score >= best * 0.45) // drop loosely related notes so the AI is not distracted by them
+    .slice(0, limit)
+    .map((r) => notes.find((n) => `note:${n.subject}/${n.slug}` === r.id))
+    .filter((n): n is NonNullable<typeof n> => !!n)
+}
+
 export async function search(query: string): Promise<Hit[]> {
   const q = query.trim()
   if (!q) return []

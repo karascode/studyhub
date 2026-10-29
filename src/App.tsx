@@ -9,6 +9,9 @@ import OrganizerPage from './pages/OrganizerPage'
 import SearchPage from './pages/SearchPage'
 import SettingsPage from './pages/SettingsPage'
 import AuthPage from './pages/AuthPage'
+import LessonsPage from './pages/LessonsPage'
+import AIHelper from './components/AIHelper'
+import { aiAvailable } from './lib/ai'
 import { currentIdentity, cloudConfigured } from './lib/identity'
 import { authFlow, getClient, realRemote } from './lib/cloud'
 import { startSync, stopSync, useSyncState } from './lib/sync'
@@ -19,6 +22,7 @@ const nav = [
   ['/', 'Dashboard'],
   ['/s/physics', 'Physics'],
   ['/s/maths', 'Maths'],
+  ['/lessons', 'Lessons'],
   ['/practice', 'Practice'],
   ['/flashcards', 'Flashcards'],
   ['/organizer', 'My notes'],
@@ -152,12 +156,14 @@ export default function App() {
         </button>
         <NavLink to="/settings" className="icon-btn" aria-label="Settings" title="Settings"><SettingsIcon /></NavLink>
       </header>
+      {aiAvailable() && <AIHelper />}
       <main id="main" className="page">
         <div key={loc.pathname} className="route">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/s/:subject" element={<SubjectPage />} />
           <Route path="/s/:subject/n/:slug" element={<NotePage />} />
+          <Route path="/lessons" element={<LessonsPage />} />
           <Route path="/practice" element={<PracticePage />} />
           <Route path="/flashcards" element={<FlashcardsPage />} />
           <Route path="/organizer" element={<OrganizerPage />} />

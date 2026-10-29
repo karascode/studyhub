@@ -32,6 +32,11 @@ Each visitor's profile, progress and notes stay in their own browser; nothing is
 Without configuration, accounts are device-only profiles. To get real accounts and progress that syncs
 across devices, follow [docs/BACKEND.md](docs/BACKEND.md) (free Supabase project, about 10 minutes).
 
+## AI helper and smart lessons (optional)
+
+AI marking, an "Ask AI" study helper and AI-written lessons run through a Supabase Edge Function that
+holds the model key (free Groq key supported). See [docs/AI.md](docs/AI.md).
+
 ## Add content
 
 - Notes: `src/content/<subject>/notes/NN-slug.mdx`, starting with `export const meta = {...}`.

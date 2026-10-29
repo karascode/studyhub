@@ -34,11 +34,27 @@ model key. The website never sees the key. The function:
 
 | Secret | Default | Purpose |
 |---|---|---|
-| `AI_MODEL` | `llama-3.3-70b-versatile` | main model |
-| `AI_FALLBACK_MODEL` | `llama-3.1-8b-instant` | used when the main model is rate limited |
+| `AI_MODEL` | `openai/gpt-oss-120b` | main model |
+| `AI_FALLBACK_MODEL` | `openai/gpt-oss-20b` | tried when the main model is rate limited or unavailable |
 | `AI_DAILY_LIMIT` | `30` | requests per user per day |
 | `AI_BASE_URL` | `https://api.groq.com/openai/v1` | any OpenAI-compatible provider |
 | `AI_API_KEY` | falls back to `GROQ_API_KEY` | key for that provider |
+
+## When something fails
+
+The student sees a short message; the real reason is in Supabase, Edge Functions, `ai`, Logs
+(look for `ai: provider error <model> <status>`).
+
+| Message | Cause |
+|---|---|
+| "AI isn't set up correctly yet" | `GROQ_API_KEY` missing or invalid (provider replied 401/403) |
+| "The AI model is unavailable" | both models were retired or renamed: set `AI_MODEL` / `AI_FALLBACK_MODEL` secrets to current names from console.groq.com/docs/models |
+| "The AI service is busy" | rate limit or provider outage |
+| "AI is not set up yet (run supabase/ai.sql)" | the limits SQL has not been run |
+
+Providers retire models. Groq shut down `llama-3.3-70b-versatile` and `llama-3.1-8b-instant` on
+16 August 2026, so check the deprecations page now and then. Failed requests are refunded and do not
+count against a student's daily limit.
 
 ## Free-tier reality
 

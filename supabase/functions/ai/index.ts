@@ -7,8 +7,8 @@
 //
 // Secrets (Supabase dashboard -> Edge Functions -> Secrets):
 //   GROQ_API_KEY        required (or AI_API_KEY)
-//   AI_MODEL            optional, default llama-3.3-70b-versatile
-//   AI_FALLBACK_MODEL   optional, default llama-3.1-8b-instant (used when the main model is rate limited)
+//   AI_MODEL            optional, default openai/gpt-oss-120b
+//   AI_FALLBACK_MODEL   optional, default openai/gpt-oss-20b (tried when the main model is limited or unavailable)
 //   AI_BASE_URL         optional, default https://api.groq.com/openai/v1
 //   AI_DAILY_LIMIT      optional, requests per user per day, default 30
 
@@ -28,6 +28,8 @@ export interface Deps {
   getUser(authHeader: string, apikey: string): Promise<{ id: string } | null>
   /** remaining requests today, or -1 when the limit has been reached */
   takeQuota(authHeader: string, apikey: string, max: number): Promise<number>
+  /** give back one request after a provider failure (optional) */
+  refundQuota?(authHeader: string, apikey: string): Promise<void>
   complete(body: Obj): Promise<{ status: number; json: any }>
 }
 
@@ -169,21 +171,40 @@ export async function handle(req: Request, deps: Deps): Promise<Response> {
   }
   if (remaining < 0) return respond({ error: `You've used today's ${limit} AI requests. They reset tomorrow.`, remaining: 0 }, 429)
 
-  const models = [deps.env('AI_MODEL') || 'llama-3.3-70b-versatile', deps.env('AI_FALLBACK_MODEL') || 'llama-3.1-8b-instant']
+  const models = [deps.env('AI_MODEL') || 'openai/gpt-oss-120b', deps.env('AI_FALLBACK_MODEL') || 'openai/gpt-oss-20b']
   let reply = ''
   let ok = false
+  let last = 0
+  let badKey = false
   for (const model of models) {
-    const r = await deps
-      .complete({ model, messages: p.messages, temperature: p.temperature, max_tokens: p.maxTokens, ...(p.json ? { response_format: { type: 'json_object' } } : {}) })
-      .catch(() => ({ status: 599, json: null }))
+    // gpt-oss models "think" first; keep that short and leave room in the token budget for the answer
+    const reasoning = /gpt-oss/.test(model)
+    const base = { model, messages: p.messages, temperature: p.temperature, max_tokens: p.maxTokens + (reasoning ? 700 : 0), ...(reasoning ? { reasoning_effort: 'low' } : {}) }
+    const call = (b: Obj) => deps.complete(b).catch(() => ({ status: 599, json: null }))
+    let r = await call(p.json ? { ...base, response_format: { type: 'json_object' } } : base)
+    // some models reject JSON mode; the reply is parsed leniently anyway, so retry without it
+    if (r.status === 400 && p.json) r = await call(base)
+    last = r.status
     if (r.status >= 200 && r.status < 300) {
       reply = String(r.json?.choices?.[0]?.message?.content ?? '')
       ok = true
       break
     }
-    if (r.status !== 429 && r.status < 500) break // a request error will not improve with another model
+    console.error('ai: provider error', model, r.status, JSON.stringify(r.json)?.slice(0, 300))
+    if (r.status === 401 || r.status === 403) {
+      badKey = true // another model will not fix a missing or invalid key
+      break
+    }
   }
-  if (!ok) return respond({ error: 'The AI service is busy right now. Try again in a minute.', remaining }, 503)
+  if (!ok) {
+    await deps.refundQuota?.(auth, apikey).catch(() => {}) // a failed request should not cost the student one of their daily requests
+    const error = badKey
+      ? 'AI isn’t set up correctly yet. The site owner needs to check the AI key.'
+      : last === 404 || last === 400
+        ? 'The AI model is unavailable right now. The site owner needs to update it.'
+        : 'The AI service is busy right now. Try again in a minute.'
+    return respond({ error, remaining: remaining + 1 }, 503)
+  }
 
   try {
     return respond({ result: shape(String(body.task), reply, body.payload ?? {}), remaining })
@@ -211,6 +232,9 @@ async function realDeps(): Promise<Deps> {
       const { data, error } = await client(auth, key).rpc('ai_take_quota', { max_per_day: max })
       if (error) throw error
       return Number(data)
+    },
+    async refundQuota(auth, key) {
+      await client(auth, key).rpc('ai_refund_quota')
     },
     async complete(body) {
       const base = (env('AI_BASE_URL') || 'https://api.groq.com/openai/v1').replace(/\/$/, '')

@@ -39,3 +39,18 @@ end $$;
 
 revoke all on function public.ai_take_quota(integer) from public, anon;
 grant execute on function public.ai_take_quota(integer) to authenticated;
+
+-- give one request back when the model provider fails (so errors never cost the student a request)
+create or replace function public.ai_refund_quota()
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.ai_usage
+  set count = greatest(count - 1, 0)
+  where user_id = auth.uid() and day = (now() at time zone 'utc')::date;
+$$;
+
+revoke all on function public.ai_refund_quota() from public, anon;
+grant execute on function public.ai_refund_quota() to authenticated;
